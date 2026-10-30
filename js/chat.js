@@ -178,11 +178,15 @@
     if (!texte) return;
     input.value = "";
     bulleClient(texte);
-    setTimeout(() => repondre(texte), 250);
+    const ecrit = document.createElement("div");   // « l'assistant écrit… »
+    ecrit.className = "msg bot ecrit"; ecrit.setAttribute("aria-label", "L'assistant écrit");
+    ecrit.innerHTML = "<i></i><i></i><i></i>";
+    ajouter(ecrit);
+    setTimeout(() => { ecrit.remove(); repondre(texte); }, 650);
   });
 
   function ouvrir() {
-    box.hidden = false; fab.setAttribute("aria-expanded", "true");
+    box.hidden = false; fab.setAttribute("aria-expanded", "true"); fab.classList.remove("appel");
     if (!accueilFait) {
       accueilFait = true;
       bulle(`Bonjour, je suis l'assistant de la ${CONFIG.nom}. ${statut()}<br>Comment puis-je vous aider ?`);

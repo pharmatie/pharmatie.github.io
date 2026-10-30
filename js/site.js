@@ -315,6 +315,9 @@ function ajouterAuPanier(id) {
   if (!p || !p.dispo) { toast("Ce produit n'est pas disponible pour le moment"); renderProducts(); return false; }
   cart[id] = (cart[id] || 0) + 1;
   saveCart(); renderProducts();
+  const b = document.querySelector(`#products .add[data-id="${id}"]`);
+  if (b) b.classList.add("pop");
+  const f = $("#cart-fab"); f.classList.remove("bump"); void f.offsetWidth; f.classList.add("bump");
   toast("Ajouté à votre liste");
   return true;
 }
@@ -397,6 +400,20 @@ async function chargerCatalogue() {
 }
 chargerCatalogue();
 setInterval(() => { if (!document.hidden) chargerCatalogue(); }, 120000);
+
+/* Animations au défilement : les blocs apparaissent quand on les atteint.
+   Sans script (ou si le visiteur réduit les animations), tout reste simplement visible. */
+(function animations() {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return;
+  document.documentElement.classList.add("js-anim");
+  const io = new IntersectionObserver(entrees => entrees.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add("vu"); io.unobserve(e.target); }
+  }), { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+  $$(".section-head, .gallery, .services, .rx, .shop-bar, #products, .hours-grid, .team, .tips, .faq, .contact")
+    .forEach(el => { el.classList.add("reveal"); io.observe(el); });
+  // Le bouton d'aide se signale une fois, après quelques secondes.
+  setTimeout(() => { if ($("#chat").hidden) $("#chat-fab").classList.add("appel"); }, 6000);
+})();
 
 /* Enseigne LED : croix verte animée, comme les croix de pharmacie */
 (function led() {

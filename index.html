@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
-<script src="config.js?v=202610301503"></script>
+<script src="config.js?v=202610301510"></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -366,9 +366,66 @@ footer small { font-size: .85rem; line-height: 1.5; }
 .toast { position: fixed; left: 50%; translate: -50% 0; bottom: calc(env(safe-area-inset-bottom, 0px) + 24px); z-index: 80; background: var(--ink); color: var(--bg); padding: 12px 18px; border-radius: 10px; font-weight: 600; box-shadow: var(--shadow); max-width: calc(100% - 32px); }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 
+/* ---------- Animations ---------- */
+:root { --ease: cubic-bezier(.2, .8, .2, 1); }
+
+/* Accueil : le texte arrive en cascade */
+@keyframes monte { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+.hero .greet, .hero h1, .hero .lead, .hero-ctas, .fact { animation: monte .7s var(--ease) both; }
+.hero h1 { animation-delay: .08s; }
+.hero .lead { animation-delay: .18s; }
+.hero-ctas { animation-delay: .28s; }
+.fact:nth-child(1) { animation-delay: .38s; } .fact:nth-child(2) { animation-delay: .46s; }
+.fact:nth-child(3) { animation-delay: .54s; } .fact:nth-child(4) { animation-delay: .62s; }
+.sign { animation: monte .9s var(--ease) .1s both; }
+
+/* « Ouvert maintenant » : le voyant bat comme une enseigne */
+@keyframes pouls { 0% { box-shadow: 0 0 0 0 rgb(25 212 110 / .55); } 70% { box-shadow: 0 0 0 9px rgb(25 212 110 / 0); } 100% { box-shadow: 0 0 0 0 rgb(25 212 110 / 0); } }
+.status-pill:not(.closed) .dot, .status-line:not(.closed) .dot { animation: pouls 2s ease-out infinite; }
+
+/* Les sections apparaissent au défilement (seulement si le script tourne : sinon tout reste visible) */
+.js-anim .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s var(--ease), transform .7s var(--ease); transition-delay: var(--d, 0s); }
+.js-anim .reveal.vu { opacity: 1; transform: none; }
+
+/* Cartes : légère élévation au survol */
+.svc, .prod, .tip, .ct, .rx-item { transition: transform .25s var(--ease), box-shadow .25s var(--ease); }
+@media (hover: hover) {
+  .prod:hover, .tip:hover, .ct:hover { transform: translateY(-4px); box-shadow: 0 14px 34px rgb(6 40 24 / .14); }
+  .svc:hover { transform: translateY(-2px); }
+  .svc:hover svg { transform: scale(1.12) rotate(-4deg); }
+}
+.svc svg { transition: transform .3s var(--ease); }
+.pic img, .gallery img { transition: transform .8s var(--ease); }
+@media (hover: hover) { .prod:hover .pic img, .gallery figure:hover img { transform: scale(1.06); } }
+
+/* Panier : le bouton « Ajouter » rebondit, le compteur saute */
+@keyframes pop { 0% { transform: scale(1); } 40% { transform: scale(1.18); } 100% { transform: scale(1); } }
+.add.pop, .cart-fab.bump .n { animation: pop .45s var(--ease); }
+@keyframes entreBas { from { opacity: 0; transform: translateY(16px) scale(.96); } to { opacity: 1; transform: none; } }
+.cart-fab:not([hidden]) { animation: entreBas .4s var(--ease); }
+.drawer:not([hidden]) .drawer-panel { animation: glisse .35s var(--ease); }
+@keyframes glisse { from { transform: translateX(40px); opacity: .4; } to { transform: none; opacity: 1; } }
+.toast:not([hidden]) { animation: entreBas .3s var(--ease); }
+
+/* Chat : le bouton attire l'œil quelques secondes, la fenêtre s'ouvre en douceur */
+@keyframes anneau { 0% { box-shadow: 0 0 0 0 rgb(25 212 110 / .5), var(--shadow); } 100% { box-shadow: 0 0 0 16px rgb(25 212 110 / 0), var(--shadow); } }
+.chat-fab.appel { animation: anneau 1.4s ease-out 3; }
+.chat:not([hidden]) { animation: ouvreChat .3s var(--ease); transform-origin: bottom left; }
+@keyframes ouvreChat { from { opacity: 0; transform: translateY(12px) scale(.96); } to { opacity: 1; transform: none; } }
+.msg, .chat-opts { animation: monte .35s var(--ease) both; }
+.ecrit { display: inline-flex; gap: 4px; padding: 12px 14px; }
+.ecrit i { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); animation: point 1s infinite ease-in-out; }
+.ecrit i:nth-child(2) { animation-delay: .15s; } .ecrit i:nth-child(3) { animation-delay: .3s; }
+@keyframes point { 0%, 80%, 100% { transform: translateY(0); opacity: .4; } 40% { transform: translateY(-5px); opacity: 1; } }
+
+/* Bouton WhatsApp : petite oscillation au survol */
+.wa-fab { transition: transform .25s var(--ease); }
+@media (hover: hover) { .wa-fab:hover { transform: scale(1.08) rotate(-6deg); } }
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .btn, .btn:hover { transition: none; transform: none; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .js-anim .reveal { opacity: 1; transform: none; }
 }
 </style>
 </head>
@@ -705,7 +762,7 @@ footer small { font-size: .85rem; line-height: 1.5; }
 
 <div class="toast" id="toast" role="status" hidden></div>
 
-<script src="js/site.js?v=202610301503"></script>
-<script src="js/chat.js?v=202610301503"></script>
+<script src="js/site.js?v=202610301510"></script>
+<script src="js/chat.js?v=202610301510"></script>
 </body>
 </html>
