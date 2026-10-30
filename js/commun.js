@@ -116,3 +116,28 @@ setInterval(horloge, 1000);
 /* Outils de texte */
 const norm = s => String(s ?? "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 const escTexte = t => String(t ?? "").replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+
+/* Barre du haut au défilement : elle se resserre, une ligne lumineuse montre la progression
+   dans la page, et le lien de la section en cours s'allume. */
+(function barreDefilement() {
+  const barre = $(".topbar");
+  if (!barre) return;
+  const liens = $$('#nav a[href^="./#"]')
+    .map(a => ({ a, cible: document.getElementById(a.getAttribute("href").slice(3)) }))
+    .filter(x => x.cible);
+  let prevu = false;
+  function maj() {
+    prevu = false;
+    const y = scrollY, max = document.documentElement.scrollHeight - innerHeight;
+    barre.classList.toggle("defile", y > 12);
+    barre.style.setProperty("--progression", max > 0 ? Math.min(1, y / max).toFixed(4) : "0");
+    let actif = null;
+    liens.forEach(x => { if (x.cible.getBoundingClientRect().top <= 140) actif = x; });
+    if (y + innerHeight >= document.documentElement.scrollHeight - 4 && liens.length) actif = liens[liens.length - 1];
+    liens.forEach(x => x.a.classList.toggle("actif", x === actif));
+  }
+  const planifier = () => { if (!prevu) { prevu = true; requestAnimationFrame(maj); } };
+  addEventListener("scroll", planifier, { passive: true });
+  addEventListener("resize", planifier);
+  maj();
+})();
