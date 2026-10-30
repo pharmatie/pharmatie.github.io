@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
-<script src="config.js?v=202610301512"></script>
+<script src="config.js?v=202610301550"></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -119,6 +119,14 @@ p { margin: 0; }
 .nav { display: flex; gap: 4px; margin-left: auto; }
 .nav a { color: var(--hero-ink); text-decoration: none; font-weight: 600; font-size: .95rem; padding: 8px 12px; border-radius: 8px; }
 .nav a:hover { background: rgb(255 255 255 / .08); }
+.clock { display: inline-flex; align-items: center; gap: 8px; padding: 5px 12px 5px 9px; border-radius: 999px; border: 1px solid rgb(255 255 255 / .14); color: var(--hero-ink); white-space: nowrap; }
+.clock svg { width: 18px; height: 18px; color: var(--led); flex: none; }
+.clock > span { display: grid; line-height: 1.05; }
+.clock .mono { font-size: .95rem; letter-spacing: .02em; }
+.clock small { font: 600 .62rem/1 var(--f-body); letter-spacing: .14em; text-transform: uppercase; color: var(--hero-muted); }
+@media (max-width: 960px) { .clock { margin-left: auto; } .topbar .menu-btn { margin-left: 4px; } }
+@media (max-width: 400px) { .clock { padding: 4px 8px; gap: 6px; } .clock svg { display: none; } .brand-name { font-size: 1rem; } }
+.heure-ici { color: var(--muted); font-size: .92rem; padding: 4px 24px 8px; }
 .status-pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; font: 600 .85rem/1 var(--f-body); background: rgb(255 255 255 / .08); white-space: nowrap; }
 .status-pill .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--led); box-shadow: 0 0 0 4px rgb(25 212 110 / .2); }
 .status-pill.closed .dot { background: var(--sand); box-shadow: 0 0 0 4px rgb(226 163 59 / .2); }
@@ -451,6 +459,10 @@ footer small { font-size: .85rem; line-height: 1.5; }
       <a href="#conseils">Conseils</a>
       <a href="#contact">Contact</a>
     </nav>
+    <span class="clock" title="Heure actuelle à Dakar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      <span><span class="mono" data-horloge>--:--:--</span><small>Dakar</small></span>
+    </span>
     <span class="status-pill" id="pill"><span class="dot"></span><span id="pill-text">…</span></span>
     <button class="menu-btn" id="menu-btn" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
@@ -559,9 +571,9 @@ footer small { font-size: .85rem; line-height: 1.5; }
         <h2>Plus qu'un comptoir</h2>
       </div>
       <div class="gallery">
-        <figure class="g-main"><img src="img/photos/interieur.jpg" alt="Intérieur d'une officine au Sénégal, rayons de médicaments derrière le comptoir" width="1200" height="800" loading="lazy" decoding="async"><figcaption>Des rayons tenus avec soin</figcaption></figure>
-        <figure><img src="img/photos/acheter.jpg" alt="Comptoir de pharmacie avec des boîtes de médicaments" width="1200" height="800" loading="lazy" decoding="async"><figcaption>Un conseil à chaque délivrance</figcaption></figure>
-        <figure><img src="img/photos/rayons.jpg" alt="Rayon de compléments en fer et vitamines" width="1200" height="800" loading="lazy" decoding="async"><figcaption>Vitamines et compléments</figcaption></figure>
+        <figure class="g-main"><img src="img/photos/conseil.jpg" alt="Un pharmacien explique un traitement à une cliente au comptoir" width="1200" height="900" loading="lazy" decoding="async"><figcaption>Un conseil à chaque délivrance</figcaption></figure>
+        <figure><img src="img/photos/officine.jpg" alt="Intérieur lumineux d'une pharmacie aux rayons bien rangés" width="1200" height="800" loading="lazy" decoding="async"><figcaption>Des rayons tenus avec soin</figcaption></figure>
+        <figure><img src="img/photos/rayons.jpg" alt="Une pharmacienne prend une boîte de médicament sur l'étagère" width="1200" height="800" loading="lazy" decoding="async"><figcaption>Le bon médicament, vérifié</figcaption></figure>
       </div>
       <div class="services">
         <div class="svc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v4H9zM5 7h14v14H5z"/><path d="M12 11v6M9 14h6"/></svg><h3>Médicaments sur ordonnance</h3><p>Délivrance et explication claire de chaque traitement : dose, horaires, durée.</p></div>
@@ -607,6 +619,7 @@ footer small { font-size: .85rem; line-height: 1.5; }
       <div class="hours-grid">
         <div class="card hours">
           <div class="status-line" id="status-line" style="padding:16px 24px 0"><span class="dot"></span><span id="status-text"></span></div>
+          <p class="heure-ici">À Dakar, nous sommes le <span data-date-dakar></span>, il est <b class="mono" data-horloge>--:--:--</b>.</p>
           <table><tbody id="hours-body"></tbody></table>
         </div>
         <div class="card garde">
@@ -715,13 +728,10 @@ footer small { font-size: .85rem; line-height: 1.5; }
     <details class="credits">
       <summary>Crédits photos</summary>
       <ul>
-        <li>Photos d'illustration de Wikimedia Commons, modifiées (recadrage). Elles ne montrent pas la Pharmacie Borom Sam.</li>
-        <li>Intérieur d'officine : Bigfall91, <a href="https://commons.wikimedia.org/wiki/File:Inside_drugstore.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener" target="_blank">CC BY-SA 4.0</a></li>
-        <li>Comptoir : Babacar Dioum, <a href="https://commons.wikimedia.org/wiki/File:Acheter_des_m%C3%A9dicaments.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener" target="_blank">CC BY-SA 4.0</a></li>
-        <li>Rayon de compléments : Charlie.Smatt, <a href="https://commons.wikimedia.org/wiki/File:Drugs_in_a_pharmacy_3.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener" target="_blank">CC BY-SA 4.0</a></li>
-        <li>Tensiomètre : Tiia Monto, <a href="https://commons.wikimedia.org/wiki/File:Beurer_BM26_sphygmomanometer.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/3.0" rel="noopener" target="_blank">CC BY-SA 3.0</a></li>
-        <li>Comprimés de vitamine C : Mx. Granger, <a href="https://commons.wikimedia.org/wiki/File:Vitamin_C_supplements_1.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, CC0</li>
-        <li>Vitamine C effervescente : Shixart1985, <a href="https://commons.wikimedia.org/wiki/File:Effervescent_tablet_of_vitamin_C_in_glass.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/2.0" rel="noopener" target="_blank">CC BY 2.0</a></li>
+        <li>Photos d'illustration provenant d'<a href="https://unsplash.com" rel="noopener" target="_blank">Unsplash</a> (<a href="https://unsplash.com/fr/licence" rel="noopener" target="_blank">licence Unsplash</a>), recadrées. Elles ne montrent pas la Pharmacie Borom Sam.</li>
+        <li>Conseil au comptoir et pharmacienne aux rayons : <a href="https://unsplash.com/fr/photos/pharmacien-montrant-le-flacon-de-pilules-a-une-femme-NNpo-liY5aU" rel="noopener" target="_blank">National Cancer Institute</a></li>
+        <li>Intérieur de pharmacie : <a href="https://unsplash.com/fr/photos/interieur-de-la-pharmacie-avec-des-etageres-de-produits-bien-approvisionnees-lile4HrTcvQ" rel="noopener" target="_blank">Cheung Yin</a></li>
+        <li>Produits : tensiomètre, <a href="https://unsplash.com/fr/photos/tensiometre-avec-brassard-gris-i1iqQRLULlg" rel="noopener" target="_blank">Mockup Graphics</a> · vitamines, <a href="https://unsplash.com/fr/photos/comprimes-de-medicaments-bruns-et-jaunes-DRchVK5apjw" rel="noopener" target="_blank">Leohoho</a> · agrumes, <a href="https://unsplash.com/fr/photos/tranches-dagrumes-avec-des-perles-de-supplement-6IfOjsRKtCg" rel="noopener" target="_blank">Madara</a> · crème, <a href="https://unsplash.com/fr/photos/trace-blanche-creme-sur-surface-beige-kD9qprR6HBI" rel="noopener" target="_blank">Kelsey Curtis</a> · lotion, <a href="https://unsplash.com/fr/photos/mains-qui-appliquent-de-la-lotion-de-white-pump-dFBhXJHKNeo" rel="noopener" target="_blank">Nataliya Melnychuk</a> · beurre, <a href="https://unsplash.com/fr/photos/pot-de-beurre-avec-cuillere-xhOUnxVVb6s" rel="noopener" target="_blank">Megumi Nachev</a> · bébé, <a href="https://unsplash.com/fr/photos/une-boite-de-couches-a-cote-dune-bouteille-de-lotion-BOhe4TSwiaQ" rel="noopener" target="_blank">Aditya Saxena</a> · gel, <a href="https://unsplash.com/fr/photos/un-flacon-de-gel-desinfectant-pour-les-mains-sur-fond-blanc-tAZElyZEm40" rel="noopener" target="_blank">Neil Bates</a> · trousse, <a href="https://unsplash.com/fr/photos/ouvre-la-trousse-medicale-rouge-avec-les-fournitures-MaKsx8JNbiI" rel="noopener" target="_blank">Mat Napo</a></li>
       </ul>
     </details>
   </div>
@@ -762,7 +772,7 @@ footer small { font-size: .85rem; line-height: 1.5; }
 
 <div class="toast" id="toast" role="status" hidden></div>
 
-<script src="js/site.js?v=202610301512"></script>
-<script src="js/chat.js?v=202610301512"></script>
+<script src="js/site.js?v=202610301550"></script>
+<script src="js/chat.js?v=202610301550"></script>
 </body>
 </html>

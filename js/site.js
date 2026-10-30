@@ -109,7 +109,21 @@ function renderHours() {
   }).join("");
 }
 renderHours();
-setInterval(renderHours, 60000);
+
+/* Horloge : heure de Dakar en direct (même heure pour tous les visiteurs, où qu'ils soient). */
+const fmtHorloge = new Intl.DateTimeFormat("fr-FR", { timeZone: "Africa/Dakar", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
+const fmtDate = new Intl.DateTimeFormat("fr-FR", { timeZone: "Africa/Dakar", weekday: "long", day: "numeric", month: "long" });
+let derniereMinute = "";
+function horloge() {
+  const maintenant = new Date();
+  const hms = fmtHorloge.format(maintenant);
+  $$("[data-horloge]").forEach(el => (el.textContent = hms));
+  $$("[data-date-dakar]").forEach(el => (el.textContent = fmtDate.format(maintenant)));
+  const minute = hms.slice(0, 5);
+  if (minute !== derniereMinute) { derniereMinute = minute; renderHours(); }   // statut « ouvert / fermé » à la minute près
+}
+horloge();
+setInterval(horloge, 1000);
 
 /* Ordonnance */
 const form = $("#rx-form"), fileIn = $("#rx-file"), drop = $("#drop");
@@ -277,10 +291,13 @@ const ILL = {
 /* Photos libres de droits (img/photos/credits.json) pour les produits qui n'ont pas encore leur propre photo. */
 function photoType(p) {
   const n = norm(p.nom + " " + p.desc);
-  if (/tensiom/.test(n)) return "img/photos/tensio.jpg";
-  if (/effervescent|vitamine c/.test(n)) return "img/photos/effervescent.jpg";
-  if (/vitamin|acide folique|\bfer\b/.test(n)) return "img/photos/vitc.jpg";
-  return "";
+  const regles = [
+    [/tensiom/, "tensio"], [/effervescent|vitamine c/, "vitc"], [/vitamin|acide folique|\bfer\b|multivit/, "vitamines"],
+    [/karite|beurre/, "karite"], [/couche|lait infantile|bebe|liniment/, "bebe"], [/hydroalcool|desinfect/, "gel"],
+    [/trousse|secours|pansement/, "kit"], [/solaire|spf/, "creme"], [/hydratante|lotion|lait corps/, "lotion"]
+  ];
+  const r = regles.find(([re]) => re.test(n));
+  return r ? `img/photos/${r[1]}.jpg` : "";
 }
 function pic(p) {
   const src = p.img || photoType(p);
