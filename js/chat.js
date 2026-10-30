@@ -1,7 +1,7 @@
 /* ================================================================
    Chat d'aide : assistant automatique pour les questions pratiques (horaires, stock, ordonnance…),
    plus un « Conseiller santé (IA) » : les questions de santé sont envoyées à la fonction serveur
-   « conseiller-sante » (Claude), jamais directement depuis le navigateur. Urgences : SAMU 1515 en premier.
+   « conseiller-sante » (IA gratuite Groq), jamais directement depuis le navigateur. Urgences : SAMU 1515 en premier.
    Utilise ce que site.js définit : CONFIG, PRODUITS, etatCatalogue, ajouterAuPanier, norm, fcfa…
    ================================================================ */
 (function chatAide() {
