@@ -101,7 +101,7 @@
   };
   const nbMots = t => t.split(/\s+/).filter(Boolean).length;
 
-  /* ---------- Conseiller santé (IA) : fonction serveur « conseiller-sante » (Claude) ---------- */
+  /* ---------- Conseiller santé (IA) : fonction serveur « conseiller-sante » (Groq) ---------- */
   let modeConseiller = false, conseillerDispo = true;
   const historique = [];   // conversation avec le conseiller, gardée seulement dans cette page
   const boutonsConseiller = texte =>
