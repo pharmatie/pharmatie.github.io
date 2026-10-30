@@ -17,27 +17,9 @@ const CONFIG = {
   }
 };
 
-// Liste de secours : remplacée automatiquement par le stock réel quand config.js est rempli.
-let PRODUITS = [
-  { id: "spf50", nom: "Crème solaire SPF 50+", desc: "Haute protection visage et corps, 50 ml.", cat: "Peau", prix: 9500 },
-  { id: "karite", nom: "Beurre de karité pur", desc: "Hydratant naturel pour peau et cheveux, 150 g.", cat: "Peau", prix: 3000 },
-  { id: "hydra", nom: "Crème hydratante peaux sèches", desc: "Usage quotidien, sans parfum, 200 ml.", cat: "Peau", prix: 6500 },
-  { id: "vitc", nom: "Vitamine C 1000 mg", desc: "Comprimés effervescents, tube de 20.", cat: "Vitamines", prix: 2500 },
-  { id: "multi", nom: "Multivitamines adulte", desc: "Fer, zinc, vitamines B, cure de 30 jours.", cat: "Vitamines", prix: 7000 },
-  { id: "fer", nom: "Fer + acide folique", desc: "Conseillé pendant la grossesse, sur avis.", cat: "Vitamines", prix: 3500 },
-  { id: "lait1", nom: "Lait infantile 1er âge", desc: "De 0 à 6 mois, boîte de 400 g.", cat: "Bébé", prix: 6000 },
-  { id: "couches", nom: "Couches bébé taille 3", desc: "Paquet de 30, 4 à 9 kg.", cat: "Bébé", prix: 5500 },
-  { id: "liniment", nom: "Liniment oléo-calcaire", desc: "Change du nourrisson, 500 ml.", cat: "Bébé", prix: 3000 },
-  { id: "sro", nom: "Sels de réhydratation orale", desc: "Sachets pour diarrhée et déshydratation.", cat: "Premiers soins", prix: 500 },
-  { id: "panse", nom: "Trousse de premiers secours", desc: "Pansements, compresses, antiseptique.", cat: "Premiers soins", prix: 8000 },
-  { id: "thermo", nom: "Thermomètre digital", desc: "Mesure en 10 secondes, embout souple.", cat: "Matériel", prix: 3500 },
-  { id: "tensio", nom: "Tensiomètre de poignet", desc: "Automatique, mémoire des mesures.", cat: "Matériel", prix: 22000 },
-  { id: "gluco", nom: "Lecteur de glycémie", desc: "Avec 10 bandelettes et autopiqueur.", cat: "Matériel", prix: 18000 },
-  { id: "repul", nom: "Répulsif anti-moustiques", desc: "Spray peau, longue durée, 100 ml.", cat: "Premiers soins", prix: 4500 },
-  { id: "dent", nom: "Dentifrice dents sensibles", desc: "Protection émail, 75 ml.", cat: "Hygiène", prix: 2500 },
-  { id: "gel", nom: "Gel hydroalcoolique", desc: "Flacon de poche, 100 ml.", cat: "Hygiène", prix: 1500 },
-  { id: "intime", nom: "Gel toilette intime", desc: "pH adapté, 250 ml.", cat: "Hygiène", prix: 4000 }
-];
+// Produits : chargés uniquement depuis la base (vue publique « catalogue »), jamais écrits dans le site.
+let PRODUITS = [];
+let etatCatalogue = "chargement";   // chargement | ok | vide | erreur
 
 /* ================================================================ */
 const $ = (s, el = document) => el.querySelector(s);
@@ -247,9 +229,14 @@ form.addEventListener("submit", async e => {
 
 /* Boutique */
 let cart = store.get("bs-cart", {});
+// Les produits de la base ont des identifiants de type UUID : tout le reste vient d'une ancienne version du site.
+Object.keys(cart).forEach(id => { if (!/^[0-9a-f-]{36}$/i.test(id)) delete cart[id]; });
 let cat = "Tout";
-const cats = ["Tout", ...new Set(PRODUITS.map(p => p.cat))];
-$("#chips").innerHTML = cats.map(c => `<button class="chip" type="button" aria-pressed="${c === cat}" data-cat="${c}">${c}</button>`).join("");
+function renderChips() {
+  const cs = PRODUITS.length ? ["Tout", ...new Set(PRODUITS.map(p => p.cat))] : [];
+  if (!cs.includes(cat)) cat = "Tout";
+  $("#chips").innerHTML = cs.map(c => `<button class="chip" type="button" aria-pressed="${c === cat}" data-cat="${c}">${c}</button>`).join("");
+}
 $("#chips").addEventListener("click", e => {
   const b = e.target.closest(".chip"); if (!b) return;
   cat = b.dataset.cat;
@@ -301,7 +288,13 @@ function pic(p) {
   return `<div class="pic" aria-hidden="true"><svg viewBox="0 0 160 120"><circle cx="128" cy="24" r="36" fill="var(--surface)" opacity=".55"/><g stroke="var(--green)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">${ILL[kindOf(p)]}</g></svg></div>`;
 }
 
+const ETATS = {
+  chargement: "Chargement des produits en stock…",
+  vide: "Aucun produit n'est encore affiché en ligne. Demandez-nous directement sur WhatsApp.",
+  erreur: "Le catalogue ne peut pas être chargé pour le moment (connexion ?). Réessayez dans un instant ou écrivez-nous sur WhatsApp."
+};
 function renderProducts() {
+  if (etatCatalogue !== "ok") { $("#products").innerHTML = `<p class="empty">${ETATS[etatCatalogue]}</p>`; return; }
   const q = norm($("#q").value.trim());
   const list = PRODUITS.filter(p => (cat === "Tout" || p.cat === cat) && (!q || norm(p.nom + " " + p.desc + " " + p.cat).includes(q)));
   $("#products").innerHTML = list.length ? list.map(p => `
@@ -311,18 +304,33 @@ function renderProducts() {
       <h3>${p.nom}</h3>
       <p>${p.desc}</p>
       <div class="foot"><span class="price">${fcfa(p.prix)}</span>
-        ${p.dispo === false ? `<span class="hint">Bientôt disponible</span>`
-          : `<button class="add ${cart[p.id] ? "in" : ""}" type="button" data-id="${p.id}">${cart[p.id] ? "Ajouté ✓" : "Ajouter"}</button>`}</div>
+        ${p.dispo ? `<button class="add ${cart[p.id] ? "in" : ""}" type="button" data-id="${p.id}">${cart[p.id] ? "Ajouté ✓" : "Ajouter"}</button>`
+          : `<span class="hint">Bientôt disponible</span>`}</div>
     </article>`).join("")
     : `<p class="empty">Aucun produit trouvé. Demandez-nous directement sur WhatsApp, nous l'avons peut-être en stock.</p>`;
 }
-$("#products").addEventListener("click", e => {
-  const b = e.target.closest(".add"); if (!b) return;
-  const id = b.dataset.id;
+/* Seul un produit présent dans la base ET en stock peut entrer dans le panier. */
+function ajouterAuPanier(id) {
+  const p = PRODUITS.find(x => x.id === id);
+  if (!p || !p.dispo) { toast("Ce produit n'est pas disponible pour le moment"); renderProducts(); return false; }
   cart[id] = (cart[id] || 0) + 1;
   saveCart(); renderProducts();
   toast("Ajouté à votre liste");
+  return true;
+}
+$("#products").addEventListener("click", e => {
+  const b = e.target.closest(".add"); if (b) ajouterAuPanier(b.dataset.id);
 });
+/* Retire du panier ce qui n'est plus dans la base ou plus en stock. */
+function nettoyerPanier() {
+  const retires = [];
+  Object.keys(cart).forEach(id => {
+    const p = PRODUITS.find(x => x.id === id);
+    if (!p || !p.dispo) { if (p) retires.push(p.nom); delete cart[id]; }
+  });
+  saveCart();
+  return retires;
+}
 
 function saveCart() { store.set("bs-cart", cart); renderCart(); }
 function renderCart() {
@@ -350,37 +358,45 @@ function updateCartLink() {
 $("#cart-name").addEventListener("input", updateCartLink);
 $("#lines").addEventListener("click", e => {
   const b = e.target.closest("button[data-d]"); if (!b) return;
-  const id = b.dataset.id; cart[id] = Math.max(0, (cart[id] || 0) + +b.dataset.d);
+  const id = b.dataset.id;
+  if (+b.dataset.d > 0) { ajouterAuPanier(id); return; }
+  cart[id] = Math.max(0, (cart[id] || 0) - 1);
   if (!cart[id]) delete cart[id];
   saveCart(); renderProducts();
 });
 $("#cart-clear").addEventListener("click", () => { cart = {}; saveCart(); renderProducts(); closeDrawer(); });
 const drawer = $("#drawer");
 function closeDrawer() { drawer.hidden = true; $("#cart-fab").focus(); }
-$("#cart-fab").addEventListener("click", () => { drawer.hidden = false; $("#drawer-x").focus(); });
+$("#cart-fab").addEventListener("click", async () => {
+  drawer.hidden = false; $("#drawer-x").focus();
+  await chargerCatalogue();          // revérifie le stock avant la commande
+});
 $("#drawer-x").addEventListener("click", closeDrawer);
 drawer.addEventListener("click", e => { if (e.target === drawer) closeDrawer(); });
 document.addEventListener("keydown", e => { if (e.key === "Escape" && !drawer.hidden) closeDrawer(); });
-renderProducts(); renderCart();
+renderChips(); renderProducts(); renderCart();
 
-/* Stock réel depuis la base (catalogue public : nom, prix, disponible) */
-(async function chargerCatalogue() {
-    try {
-      const sb = await getSb();
-      if (!sb) return;
-      const { data, error } = await sb.from("catalogue").select("*").order("nom");
-      if (error || !data || !data.length) return;
-      const esc = t => String(t ?? "").replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
-      PRODUITS = data.map(p => ({ id: p.id, nom: esc(p.nom), desc: esc(p.description), cat: esc(p.categorie), prix: p.prix_vente, dispo: p.disponible,
-        img: /^https:\/\//.test(p.image_url || "") ? esc(p.image_url) : "" }));
-      const known = new Set(PRODUITS.map(p => p.id));
-      Object.keys(cart).forEach(id => { if (!known.has(id)) delete cart[id]; });
-      const cs = ["Tout", ...new Set(PRODUITS.map(p => p.cat))];
-      if (!cs.includes(cat)) cat = "Tout";
-      $("#chips").innerHTML = cs.map(x => `<button class="chip" type="button" aria-pressed="${x === cat}" data-cat="${x}">${x}</button>`).join("");
-      saveCart(); renderProducts();
-    } catch {}
-})();
+/* Stock réel depuis la base (catalogue public : nom, prix, disponible). Rechargé toutes les 2 minutes. */
+const escTexte = t => String(t ?? "").replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+async function chargerCatalogue() {
+  try {
+    const sb = await getSb();
+    if (!sb) throw new Error("base non configurée");
+    const { data, error } = await sb.from("catalogue").select("*").order("nom");
+    if (error) throw error;
+    PRODUITS = (data || []).map(p => ({ id: p.id, nom: escTexte(p.nom), desc: escTexte(p.description), cat: escTexte(p.categorie),
+      prix: p.prix_vente, dispo: p.disponible === true,
+      img: /^https:\/\//.test(p.image_url || "") ? escTexte(p.image_url) : "" }));
+    etatCatalogue = PRODUITS.length ? "ok" : "vide";
+    const retires = nettoyerPanier();
+    if (retires.length) toast(`Retiré de votre liste (plus en stock) : ${retires.join(", ")}`);
+  } catch {
+    if (!PRODUITS.length) etatCatalogue = "erreur";   // on garde la dernière liste connue si elle existe
+  }
+  renderChips(); renderProducts(); renderCart();
+}
+chargerCatalogue();
+setInterval(() => { if (!document.hidden) chargerCatalogue(); }, 120000);
 
 /* Enseigne LED : croix verte animée, comme les croix de pharmacie */
 (function led() {
