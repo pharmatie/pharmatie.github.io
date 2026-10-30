@@ -1,52 +1,14 @@
-/* ================================================================
-   CONFIGURATION — à modifier par la pharmacie
-   ================================================================ */
-const CONFIG = {
-  nom: "Pharmacie Borom Sam",
-  pharmacien: "Dr Djily Mbaye",
-  telephone: "+221 77 866 84 24",
-  whatsapp: "221778668424",              // indicatif + numéro, sans + ni espaces
-  adresse: "Adresse à compléter, Sénégal", // À REMPLACER : quartier, rue, repère
-  mapsQuery: "Pharmacie Borom Sam Sénégal", // ce que Google Maps doit chercher
-  deGarde: false,                         // passer à true les jours de garde
-  // Horaires : 0 = dimanche … 6 = samedi. null = fermé.
-  horaires: {
-    1: ["08:00", "23:00"], 2: ["08:00", "23:00"], 3: ["08:00", "23:00"],
-    4: ["08:00", "23:00"], 5: ["08:00", "23:00"], 6: ["08:00", "23:00"],
-    0: ["08:00", "20:00"]
-  }
-};
+/* Page d'accueil. Utilise js/commun.js (CONFIG, horloge, menu, statut…), chargé avant ce fichier. */
 
 // Produits : chargés uniquement depuis la base (vue publique « catalogue »), jamais écrits dans le site.
 let PRODUITS = [];
 let etatCatalogue = "chargement";   // chargement | ok | vide | erreur
 
-/* ================================================================ */
-const $ = (s, el = document) => el.querySelector(s);
-const $$ = (s, el = document) => [...el.querySelectorAll(s)];
-const fcfa = n => n.toLocaleString("fr-FR").replace(/ | /g, " ") + " FCFA";
-const waLink = text => `https://wa.me/${CONFIG.whatsapp}` + (text ? `?text=${encodeURIComponent(text)}` : "");
-const telHref = "tel:" + CONFIG.telephone.replace(/\s/g, "");
-const JOURS = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
-const store = {
-  get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
-  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
-};
-
-function toast(msg) {
-  const t = $("#toast"); t.textContent = msg; t.hidden = false;
-  clearTimeout(toast.t); toast.t = setTimeout(() => (t.hidden = true), 2600);
-}
-
 /* Coordonnées */
-$("#year").textContent = new Date().getFullYear();
 $("#c-addr").textContent = CONFIG.adresse;
 $("#c-phone").textContent = CONFIG.telephone;
 $("#c-wa").textContent = "+" + CONFIG.whatsapp.replace(/^(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})$/, "$1 $2 $3 $4 $5");
 $("#c-map").href = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(CONFIG.mapsQuery);
-$$("[data-tel]").forEach(a => (a.href = telHref));
-$$("[data-phone-text]").forEach(s => (s.textContent = CONFIG.telephone));
-$$("[data-wa]").forEach(a => (a.href = waLink(`Bonjour ${CONFIG.nom}, `)));
 $$("[data-copy]").forEach(b => b.addEventListener("click", () => {
   const val = b.dataset.copy === "phone" ? CONFIG.telephone : $("#c-wa").textContent;
   const p = navigator.clipboard ? navigator.clipboard.writeText(val) : Promise.reject();
@@ -57,73 +19,6 @@ $$("[data-copy]").forEach(b => b.addEventListener("click", () => {
     toast("Numéro sélectionné, copiez-le");
   });
 }));
-
-/* Menu mobile */
-const nav = $("#nav"), menuBtn = $("#menu-btn");
-menuBtn.addEventListener("click", () => {
-  const open = nav.classList.toggle("open");
-  menuBtn.setAttribute("aria-expanded", open);
-});
-$$("a", nav).forEach(a => a.addEventListener("click", () => { nav.classList.remove("open"); menuBtn.setAttribute("aria-expanded", false); }));
-
-/* Horaires, heure de Dakar (GMT) */
-function dakarNow() {
-  const parts = new Intl.DateTimeFormat("en-GB", { timeZone: "Africa/Dakar", weekday: "short", hour: "2-digit", minute: "2-digit", hour12: false }).formatToParts(new Date());
-  const get = t => parts.find(p => p.type === t).value;
-  const day = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(get("weekday"));
-  return { day, min: (+get("hour") % 24) * 60 + +get("minute") };
-}
-const toMin = s => { const [h, m] = s.split(":").map(Number); return h * 60 + m; };
-const fmtH = s => s.replace(":00", "h").replace(":", "h");
-
-function nextOpening(now) {
-  for (let i = 0; i < 8; i++) {
-    const d = (now.day + i) % 7, h = CONFIG.horaires[d];
-    if (!h) continue;
-    if (i === 0 && now.min >= toMin(h[0])) continue;
-    return (i === 0 ? "aujourd'hui" : i === 1 ? "demain" : JOURS[d].toLowerCase()) + " à " + fmtH(h[0]);
-  }
-  return "";
-}
-
-function renderHours() {
-  const now = dakarNow(), h = CONFIG.horaires[now.day];
-  const open = !!h && now.min >= toMin(h[0]) && now.min < toMin(h[1]);
-  let label, detail;
-  if (open) { label = "Ouvert maintenant"; detail = `Ferme à ${fmtH(h[1])}`; }
-  else { label = CONFIG.deGarde ? "De garde" : "Fermé"; detail = CONFIG.deGarde ? "Sonnez à la porte" : `Ouvre ${nextOpening(now)}`; }
-  const isOpen = open || CONFIG.deGarde;
-
-  $("#pill").classList.toggle("closed", !isOpen);
-  $("#pill-text").textContent = label;
-  $("#fact-status").textContent = label;
-  $("#fact-hours").textContent = detail;
-  $("#status-line").classList.toggle("closed", !isOpen);
-  $("#status-text").textContent = `${label} · ${detail}`;
-  if (CONFIG.deGarde) $("#garde-text").textContent = "Nous sommes de garde aujourd'hui. Présentez-vous à la pharmacie ou appelez-nous avant de venir.";
-
-  const order = [1, 2, 3, 4, 5, 6, 0];
-  $("#hours-body").innerHTML = order.map(d => {
-    const r = CONFIG.horaires[d];
-    return `<tr class="${d === now.day ? "today" : ""}"><td>${JOURS[d]}${d === now.day ? " · aujourd'hui" : ""}</td><td>${r ? fmtH(r[0]) + " – " + fmtH(r[1]) : "Fermé"}</td></tr>`;
-  }).join("");
-}
-renderHours();
-
-/* Horloge : heure de Dakar en direct (même heure pour tous les visiteurs, où qu'ils soient). */
-const fmtHorloge = new Intl.DateTimeFormat("fr-FR", { timeZone: "Africa/Dakar", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
-const fmtDate = new Intl.DateTimeFormat("fr-FR", { timeZone: "Africa/Dakar", weekday: "long", day: "numeric", month: "long" });
-let derniereMinute = "";
-function horloge() {
-  const maintenant = new Date();
-  const hms = fmtHorloge.format(maintenant);
-  $$("[data-horloge]").forEach(el => (el.textContent = hms));
-  $$("[data-date-dakar]").forEach(el => (el.textContent = fmtDate.format(maintenant)));
-  const minute = hms.slice(0, 5);
-  if (minute !== derniereMinute) { derniereMinute = minute; renderHours(); }   // statut « ouvert / fermé » à la minute près
-}
-horloge();
-setInterval(horloge, 1000);
 
 /* Ordonnance */
 const form = $("#rx-form"), fileIn = $("#rx-file"), drop = $("#drop");
@@ -259,7 +154,6 @@ $("#chips").addEventListener("click", e => {
 });
 $("#q").addEventListener("input", renderProducts);
 
-const norm = s => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 
 /* Visuels des produits : la vraie photo si le pharmacien en a ajouté une, sinon une illustration du type de produit. */
 function kindOf(p) {
@@ -397,7 +291,6 @@ document.addEventListener("keydown", e => { if (e.key === "Escape" && !drawer.hi
 renderChips(); renderProducts(); renderCart();
 
 /* Stock réel depuis la base (catalogue public : nom, prix, disponible). Rechargé toutes les 2 minutes. */
-const escTexte = t => String(t ?? "").replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
 async function chargerCatalogue() {
   try {
     const sb = await getSb();

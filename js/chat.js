@@ -6,7 +6,13 @@
    ================================================================ */
 (function chatAide() {
   const fab = $("#chat-fab"), box = $("#chat"), log = $("#chat-log"), form = $("#chat-form"), input = $("#chat-in");
+  if (!fab || !box) return;
   let accueilFait = false;
+  // Sur les autres pages que l'accueil, la boutique (site.js) n'est pas chargée.
+  const boutique = typeof PRODUITS !== "undefined";
+  const produits = () => (boutique ? PRODUITS : []);
+  const catalogueOk = () => boutique && etatCatalogue === "ok";
+  const lienCarte = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(CONFIG.mapsQuery);
 
   const MENU = [
     ["horaires", "Horaires"], ["ordonnance", "Envoyer une ordonnance"], ["produit", "Un produit est-il disponible ?"],
@@ -53,12 +59,17 @@
     const mots = decouper(texte).filter(m => m.length >= 3 && !VIDES.has(m));
     if (!mots.length) return [];
     // Un mot de la question doit être le DÉBUT d'un mot du produit (« creme » → « crème »), pas un morceau (« ans » ≠ « sans »).
-    return PRODUITS
+    return produits()
       .map(p => { const mp = decouper(p.nom + " " + p.desc + " " + p.cat); return { p, score: mots.filter(m => mp.some(w => w.startsWith(m))).length }; })
       .filter(x => x.score > 0).sort((a, b) => b.score - a.score).slice(0, 4).map(x => x.p);
   }
   function repondreProduits(texte, trouves) {
-    if (etatCatalogue !== "ok") {
+    if (!boutique) {
+      bulle("Pour voir le stock, ouvrez la parapharmacie sur la page d'accueil, ou demandez directement au pharmacien.");
+      options(`<a href="./#boutique">Voir la parapharmacie</a>` + lienWA(`Bonjour ${CONFIG.nom}, avez-vous : ${texte} ?`));
+      return;
+    }
+    if (!catalogueOk()) {
       bulle("Je n'arrive pas à consulter le stock pour le moment. Le pharmacien peut vérifier pour vous.");
       options(lienWA(`Bonjour ${CONFIG.nom}, avez-vous : ${texte} ?`));
       return;
@@ -121,7 +132,7 @@
     }
     if (R.adresse.test(t)) {
       bulle(`Adresse : ${escTexte(CONFIG.adresse)}.`);
-      options(`<a href="${escTexte($("#c-map").href)}" target="_blank" rel="noopener">Itinéraire Google Maps</a>`);
+      options(`<a href="${escTexte(lienCarte)}" target="_blank" rel="noopener">Itinéraire Google Maps</a>`);
       return;
     }
     if (R.contact.test(t)) {
@@ -160,7 +171,7 @@
     if (k) { bulleClient(k.textContent); ACTIONS[k.dataset.k](); return; }
     const a = e.target.closest("button[data-add]");
     if (a) {
-      if (ajouterAuPanier(a.dataset.add)) {
+      if (boutique && ajouterAuPanier(a.dataset.add)) {
         a.textContent = "Ajouté ✓"; a.disabled = true;
         bulle("C'est dans votre liste. Ouvrez « Ma liste » pour envoyer la commande sur WhatsApp.");
         options(`<button type="button" data-liste="1">Ouvrir ma liste</button>`);
@@ -169,7 +180,11 @@
     }
     if (e.target.closest("button[data-liste]")) { fermer(); $("#cart-fab").click(); return; }
     const go = e.target.closest("button[data-go]");
-    if (go) { fermer(); document.querySelector(go.dataset.go).scrollIntoView({ behavior: "smooth" }); }
+    if (go) {
+      fermer();
+      const cible = document.querySelector(go.dataset.go);
+      if (cible) cible.scrollIntoView({ behavior: "smooth" }); else location.href = "./" + go.dataset.go;
+    }
   });
 
   form.addEventListener("submit", e => {
