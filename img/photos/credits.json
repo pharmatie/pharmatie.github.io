@@ -1,0 +1,44 @@
+{
+ "interieur": {
+  "titre": "File:Inside drugstore.jpg",
+  "licence": "CC BY-SA 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
+  "auteur": "Bigfall91",
+  "page": "https://commons.wikimedia.org/wiki/File:Inside_drugstore.jpg"
+ },
+ "acheter": {
+  "titre": "File:Acheter des médicaments.jpg",
+  "licence": "CC BY-SA 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
+  "auteur": "Babacar Dioum",
+  "page": "https://commons.wikimedia.org/wiki/File:Acheter_des_m%C3%A9dicaments.jpg"
+ },
+ "rayons": {
+  "titre": "File:Drugs in a pharmacy 3.jpg",
+  "licence": "CC BY-SA 4.0",
+  "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
+  "auteur": "Charlie.Smatt",
+  "page": "https://commons.wikimedia.org/wiki/File:Drugs_in_a_pharmacy_3.jpg"
+ },
+ "tensio": {
+  "titre": "File:Beurer BM26 sphygmomanometer.jpg",
+  "licence": "CC BY-SA 3.0",
+  "licence_url": "https://creativecommons.org/licenses/by-sa/3.0",
+  "auteur": "Tiia Monto",
+  "page": "https://commons.wikimedia.org/wiki/File:Beurer_BM26_sphygmomanometer.jpg"
+ },
+ "vitc": {
+  "titre": "File:Vitamin C supplements 1.jpg",
+  "licence": "CC0",
+  "licence_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+  "auteur": "Mx. Granger",
+  "page": "https://commons.wikimedia.org/wiki/File:Vitamin_C_supplements_1.jpg"
+ },
+ "effervescent": {
+  "titre": "File:Effervescent tablet of vitamin C in glass.jpg",
+  "licence": "CC BY 2.0",
+  "licence_url": "https://creativecommons.org/licenses/by/2.0",
+  "auteur": "Shixart1985",
+  "page": "https://commons.wikimedia.org/wiki/File:Effervescent_tablet_of_vitamin_C_in_glass.jpg"
+ }
+}

@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tiycpppxkyggxphdkscx.supabase.co; connect-src 'self' https://tiycpppxkyggxphdkscx.supabase.co; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Stock Borom Sam</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#064E2E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23064E2E'/%3E%3Cpath d='M12 5h8v7h7v8h-7v7h-8v-7H5v-8h7z' fill='%2319D46E'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<script src="config.js?v=202610301443"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js" integrity="sha384-GFr3yTh5lJznCbZfpTtXnwboFsxqtTQoeTZCRHhE0579KrRmlCzen5AA8ohaB5ug" crossorigin="anonymous"></script>
+<style>
+/* Layout: pharmacy back-office. Green header band, summary tiles, then one working table of stock. */
+:root {
+  --bg: #F2F6F3; --surface: #FFFFFF; --surface-2: #E7EFEA; --ink: #0F2A1E; --muted: #4A6256; --line: #D3E0D8;
+  --green: #0A7A47; --green-ink: #FFFFFF; --hero-bg: #064E2E; --hero-ink: #ECF7F0; --hero-muted: #A9CDB8;
+  --sand: #E2A33B; --sand-ink: #2A1A00; --led: #19D46E;
+  --ok: #138A4E; --ok-bg: #DDF3E6; --warn: #A65A08; --warn-bg: #FBEBD3; --bad: #B42318; --bad-bg: #FBE0DD;
+  --shadow: 0 1px 2px rgb(6 40 24 / .06), 0 8px 24px rgb(6 40 24 / .07);
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #07130D; --surface: #0E1F17; --surface-2: #13291E; --ink: #E4F0E8; --muted: #9AB4A6; --line: #1F3A2C;
+    --green: #2FBF77; --green-ink: #03140B; --hero-bg: #04291A; --hero-ink: #E4F5EB; --hero-muted: #8FB9A1;
+    --sand: #F0B85A; --sand-ink: #2A1A00; --led: #3CF28F;
+    --ok: #3CD483; --ok-bg: #123524; --warn: #F2A44B; --warn-bg: #3A2710; --bad: #FF8A7E; --bad-bg: #3F1714;
+    --shadow: 0 1px 2px rgb(0 0 0 / .3), 0 8px 24px rgb(0 0 0 / .3); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #07130D; --surface: #0E1F17; --surface-2: #13291E; --ink: #E4F0E8; --muted: #9AB4A6; --line: #1F3A2C;
+  --green: #2FBF77; --green-ink: #03140B; --hero-bg: #04291A; --hero-ink: #E4F5EB; --hero-muted: #8FB9A1;
+  --sand: #F0B85A; --sand-ink: #2A1A00; --led: #3CF28F;
+  --ok: #3CD483; --ok-bg: #123524; --warn: #F2A44B; --warn-bg: #3A2710; --bad: #FF8A7E; --bad-bg: #3F1714;
+  --shadow: 0 1px 2px rgb(0 0 0 / .3), 0 8px 24px rgb(0 0 0 / .3); color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 16px/1.5 var(--f-body); -webkit-font-smoothing: antialiased; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60; background: var(--hero-bg); }
+h1, h2, h3 { font-family: var(--f-display); margin: 0; line-height: 1.15; text-wrap: balance; }
+p { margin: 0; }
+:focus-visible { outline: 3px solid var(--sand); outline-offset: 2px; border-radius: 6px; }
+.wrap { max-width: 1200px; margin-inline: auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.mono { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+.muted { color: var(--muted); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1.5px solid transparent; font: 700 .95rem/1 var(--f-body); cursor: pointer; text-decoration: none; white-space: nowrap; }
+.btn-green { background: var(--green); color: var(--green-ink); }
+.btn-sand { background: var(--sand); color: var(--sand-ink); }
+.btn-line { background: var(--surface); color: var(--ink); border-color: var(--line); }
+.btn-line:hover { border-color: var(--green); }
+.btn-danger { background: transparent; color: var(--bad); border-color: currentColor; }
+.btn[disabled] { opacity: .6; cursor: progress; }
+
+.topbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30; background: var(--hero-bg); color: var(--hero-ink); }
+.topbar .wrap { display: flex; align-items: center; gap: 14px; min-height: 64px; flex-wrap: wrap; }
+.brand { display: flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; }
+.brand svg { width: 34px; height: 34px; }
+.brand b { font: 800 1.05rem/1.05 var(--f-display); display: block; }
+.brand small { color: var(--hero-muted); font-size: .8rem; }
+.who { margin-left: auto; display: flex; align-items: center; gap: 12px; font-size: .9rem; color: var(--hero-muted); }
+.who .btn { min-height: 38px; color: var(--hero-ink); border-color: rgb(255 255 255 / .25); background: transparent; }
+
+.demo { background: var(--warn-bg); color: var(--warn); font-weight: 600; font-size: .92rem; }
+.demo .wrap { padding-block: 10px; }
+
+/* Login */
+.login { min-height: calc(100vh - 64px); display: grid; place-items: center; padding-block: 40px; }
+.login-card { width: min(420px, 100%); background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); padding: 30px; display: grid; gap: 18px; }
+.login-card .lock { width: 48px; height: 48px; border-radius: 12px; background: var(--surface-2); color: var(--green); display: grid; place-items: center; }
+.field { display: grid; gap: 6px; min-width: 0; }
+.field label { font-weight: 600; font-size: .92rem; }
+.field input, .field select, .field textarea { width: 100%; font: inherit; color: var(--ink); background: var(--bg); border: 1.5px solid var(--line); border-radius: 10px; padding: 10px 12px; min-height: 44px; }
+.field textarea { min-height: 70px; resize: vertical; }
+.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 3px rgb(10 122 71 / .18); }
+.check { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: .95rem; cursor: pointer; }
+.check input { width: 20px; height: 20px; accent-color: var(--green); }
+.err { color: var(--bad); font-weight: 600; font-size: .92rem; }
+.link { background: none; border: 0; color: var(--green); font: 600 .9rem var(--f-body); cursor: pointer; padding: 4px 0; justify-self: start; }
+
+/* Dashboard */
+main.app { padding-block: 28px 60px; display: grid; gap: 26px; }
+.head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 16px; }
+.head h1 { font-size: clamp(1.6rem, 3vw, 2.2rem); }
+.tiles { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: grid; gap: 4px; text-align: left; font: inherit; color: inherit; cursor: pointer; }
+.tile:hover { border-color: var(--green); }
+.tile span { font-size: .85rem; color: var(--muted); font-weight: 600; }
+.tile b { font: 500 1.6rem/1.1 var(--f-mono); font-variant-numeric: tabular-nums; }
+.tile.warn b { color: var(--warn); } .tile.bad b { color: var(--bad); }
+@media (max-width: 900px) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } .tile:first-child { grid-column: 1 / -1; } }
+
+.bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.bar .search { flex: 1 1 240px; }
+.bar input[type="search"] { width: 100%; font: inherit; color: var(--ink); background: var(--surface); border: 1.5px solid var(--line); border-radius: 999px; padding: 10px 16px; min-height: 44px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font: 600 .88rem/1 var(--f-body); padding: 10px 14px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--green); border-color: var(--green); color: var(--green-ink); }
+
+.table-box { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; min-width: 820px; }
+th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: middle; }
+th { font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 700; background: var(--surface-2); position: sticky; top: 0; }
+tr:last-child td { border-bottom: 0; }
+td.num, th.num { text-align: right; font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+.pcell { display: flex; align-items: center; gap: 12px; }
+.thumb { width: 44px; height: 44px; flex: none; border-radius: 8px; background: var(--surface-2); object-fit: cover; display: grid; place-items: center; color: var(--muted); }
+.photo-box { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.photo-box img, .photo-box .ph { width: 96px; height: 96px; border-radius: 12px; object-fit: cover; background: var(--surface-2); border: 1px solid var(--line); }
+.photo-box .ph { display: grid; place-items: center; color: var(--muted); font-size: .8rem; text-align: center; padding: 8px; }
+.photo-acts { display: flex; flex-wrap: wrap; gap: 8px; }
+.photo-acts label { cursor: pointer; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.pname b { display: block; }
+.pname small { color: var(--muted); }
+.tag { display: inline-block; font-size: .72rem; font-weight: 700; padding: 3px 8px; border-radius: 999px; background: var(--surface-2); color: var(--muted); margin-left: 6px; vertical-align: 1px; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font: 600 .82rem/1.2 var(--f-body); white-space: nowrap; }
+.pill.ok { background: var(--ok-bg); color: var(--ok); }
+.pill.warn { background: var(--warn-bg); color: var(--warn); }
+.pill.bad { background: var(--bad-bg); color: var(--bad); }
+.acts { display: flex; gap: 6px; justify-content: flex-end; }
+.ibtn { min-height: 36px; min-width: 36px; padding: 0 10px; border-radius: 8px; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); font: 700 .88rem var(--f-body); cursor: pointer; }
+.ibtn:hover { border-color: var(--green); }
+.ibtn.in { color: var(--ok); } .ibtn.out { color: var(--bad); }
+.empty { padding: 30px; text-align: center; color: var(--muted); }
+
+.rx-sec { display: grid; gap: 14px; }
+.rx-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.rx-head h2 { font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
+.badge { font: 700 .85rem/1 var(--f-body); background: var(--sand); color: var(--sand-ink); border-radius: 999px; padding: 5px 10px; }
+.rx-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 12px; }
+.rx-item { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: grid; gap: 8px; align-content: start; }
+.rx-item.nouvelle { border-color: var(--sand); box-shadow: inset 0 3px 0 var(--sand); }
+.rx-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.rx-top small { margin-left: auto; color: var(--muted); }
+.rx-item p { color: var(--muted); font-size: .93rem; overflow-wrap: anywhere; }
+.rx-acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.rx-acts select { font: 600 .88rem var(--f-body); color: var(--ink); background: var(--surface); border: 1.5px solid var(--line); border-radius: 8px; min-height: 36px; padding: 0 8px; }
+.rx-view img { width: 100%; border-radius: 10px; background: var(--surface-2); }
+.team { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.team-list { list-style: none; margin: 0; padding: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; }
+.team-list li { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+.team-list li:last-child { border-bottom: 0; }
+.team-list .who-txt { flex: 1 1 180px; min-width: 0; }
+.team-list .who-txt small { display: block; color: var(--muted); overflow-wrap: anywhere; }
+.team-form { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: grid; gap: 12px; }
+.pw-row { display: flex; gap: 8px; }
+.pw-row input { flex: 1; min-width: 0; }
+@media (max-width: 860px) { .team { grid-template-columns: 1fr; } }
+.hist { display: grid; gap: 12px; }
+.hist ol { list-style: none; margin: 0; padding: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; }
+.hist li { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--line); align-items: center; }
+.hist li:last-child { border-bottom: 0; }
+.hist .q { font-family: var(--f-mono); font-weight: 500; min-width: 54px; text-align: right; }
+.hist .q.plus { color: var(--ok); } .hist .q.minus { color: var(--bad); }
+.hist small { color: var(--muted); }
+
+dialog { border: 0; padding: 0; border-radius: 16px; background: var(--surface); color: var(--ink); width: min(560px, calc(100% - 32px)); box-shadow: var(--shadow); }
+dialog::backdrop { background: rgb(0 0 0 / .45); }
+.dlg { padding: 24px; display: grid; gap: 16px; max-height: 85vh; overflow-y: auto; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 520px) { .grid2 { grid-template-columns: 1fr; } }
+.dlg-foot { display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-end; }
+.dlg-foot .btn-danger { margin-right: auto; }
+.seg { display: flex; gap: 6px; }
+.seg label { flex: 1; text-align: center; padding: 10px; border: 1.5px solid var(--line); border-radius: 10px; font-weight: 700; cursor: pointer; }
+.seg input { position: absolute; opacity: 0; }
+.seg label:has(input:checked) { border-color: var(--green); background: var(--surface-2); color: var(--green); }
+.seg label:has(input:focus-visible) { outline: 3px solid var(--sand); }
+
+.toast { position: fixed; left: 50%; translate: -50% 0; bottom: calc(env(safe-area-inset-bottom, 0px) + 24px); z-index: 80; background: var(--ink); color: var(--bg); padding: 12px 18px; border-radius: 10px; font-weight: 600; max-width: calc(100% - 32px); }
+.loading { padding: 60px 0; text-align: center; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="9" fill="currentColor" opacity=".12"/><path d="M15 6h10v9h9v10h-9v9H15v-9H6V15h9z" fill="var(--led)"/></svg>
+      <span><b>Pharmacie Borom Sam</b><small>Espace pharmacien</small></span>
+    </a>
+    <div class="who" id="who" hidden><span><span id="who-email"></span> · <span id="who-role"></span></span><button class="btn" id="my-pw" type="button">Mon mot de passe</button><button class="btn" id="logout" type="button">Se déconnecter</button></div>
+  </div>
+</header>
+<div class="demo" id="demo-banner" hidden><div class="wrap">Mode démonstration : la base de données n'est pas encore branchée. Les données d'exemple restent dans ce navigateur uniquement.</div></div>
+
+<!-- CONNEXION -->
+<section class="wrap login" id="login-view" hidden>
+  <form class="login-card" id="login-form" novalidate>
+    <div class="lock"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div>
+    <div><h1 style="font-size:1.6rem">Accès réservé</h1><p class="muted" style="margin-top:6px">Gestion du stock de la pharmacie. Réservé au Dr Djily Mbaye.</p></div>
+    <div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="username" required></div>
+    <div class="field"><label for="password">Mot de passe</label><input id="password" type="password" autocomplete="current-password" required></div>
+    <p class="err" id="login-err" hidden></p>
+    <button class="btn btn-green" type="submit" id="login-btn">Se connecter</button>
+    <button class="link" type="button" id="forgot">Mot de passe oublié ?</button>
+  </form>
+</section>
+
+<!-- TABLEAU DE BORD -->
+<main class="wrap app" id="app-view" hidden>
+  <div class="head">
+    <div><p class="muted" id="today"></p><h1>Stock de la pharmacie</h1></div>
+    <div class="bar">
+      <button class="btn btn-line" type="button" id="export">Exporter (CSV)</button>
+      <button class="btn btn-sand" type="button" id="new-prod">+ Nouveau produit</button>
+    </div>
+  </div>
+
+  <section class="rx-sec" id="rx-sec">
+    <div class="rx-head">
+      <h2>Ordonnances reçues <span class="badge" id="rx-badge" hidden></span></h2>
+      <div class="chips" id="rx-filters" role="group" aria-label="Filtrer les ordonnances">
+        <button class="chip" type="button" data-rf="a_traiter" aria-pressed="true">À traiter</button>
+        <button class="chip" type="button" data-rf="toutes" aria-pressed="false">Toutes</button>
+      </div>
+    </div>
+    <div class="rx-list" id="rx-list"></div>
+  </section>
+
+  <div class="tiles" id="tiles"></div>
+
+  <div class="bar">
+    <div class="search"><input id="q" type="search" aria-label="Rechercher un produit" placeholder="Rechercher un produit, un code-barres…"></div>
+    <div class="chips" id="filters" role="group" aria-label="Filtrer"></div>
+  </div>
+
+  <div class="table-box">
+    <table>
+      <thead><tr><th>Produit</th><th>Catégorie</th><th class="num">Stock</th><th>État</th><th class="num">Prix vente</th><th>Péremption</th><th>Site</th><th style="text-align:right">Actions</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+
+  <section class="hist">
+    <h2 style="font-size:1.3rem">Derniers mouvements</h2>
+    <ol id="hist"></ol>
+  </section>
+
+  <!-- ÉQUIPE : visible seulement par le pharmacien titulaire -->
+  <section class="rx-sec" id="team-sec" hidden>
+    <div class="rx-head">
+      <h2>Équipe</h2>
+      <span class="muted" style="font-size:.9rem">Les employés gèrent le stock et les ordonnances. Seul le titulaire gère l'équipe et supprime des produits.</span>
+    </div>
+    <div class="team">
+      <ul class="team-list" id="team-list"></ul>
+      <form class="team-form" id="team-form" novalidate>
+        <h3 style="font-size:1.1rem">Créer un compte</h3>
+        <div class="field"><label for="t-nom">Nom et prénom</label><input id="t-nom" autocomplete="off" placeholder="Ex. Aminata Fall"></div>
+        <div class="field"><label for="t-email">Email</label><input id="t-email" type="email" autocomplete="off" placeholder="prenom.nom@gmail.com"></div>
+        <div class="field">
+          <label for="t-pw">Mot de passe provisoire (10 caractères min.)</label>
+          <div class="pw-row"><input id="t-pw" type="text" autocomplete="new-password" spellcheck="false"><button class="btn btn-line" type="button" id="t-gen">Générer</button></div>
+          <span class="muted" style="font-size:.85rem">Donnez-le à la personne en main propre. Elle le change ensuite avec « Mon mot de passe ».</span>
+        </div>
+        <div class="field"><label for="t-role">Rôle</label>
+          <select id="t-role"><option value="employe">Employé(e)</option><option value="titulaire">Titulaire (accès complet)</option></select></div>
+        <p class="err" id="t-err" hidden></p>
+        <button class="btn btn-green" type="submit" id="t-submit">Créer le compte</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<p class="loading wrap" id="loading">Chargement…</p>
+
+<!-- PRODUIT -->
+<dialog id="dlg-prod">
+  <form class="dlg" id="form-prod" novalidate>
+    <h2 id="prod-title" style="font-size:1.4rem">Nouveau produit</h2>
+    <div class="field"><label for="p-nom">Nom du produit</label><input id="p-nom" required placeholder="Ex. Paracétamol 500 mg"></div>
+    <div class="grid2">
+      <div class="field"><label for="p-cat">Catégorie</label><input id="p-cat" list="cats" placeholder="Ex. Antalgiques"><datalist id="cats"></datalist></div>
+      <div class="field"><label for="p-forme">Forme</label><input id="p-forme" placeholder="Comprimé, sirop, crème…"></div>
+    </div>
+    <div class="field">
+      <span style="font-weight:600;font-size:.92rem">Photo du produit (visible sur le site)</span>
+      <div class="photo-box">
+        <img id="p-photo-img" alt="Photo du produit" hidden>
+        <div class="ph" id="p-photo-ph">Pas de photo</div>
+        <div class="photo-acts">
+          <label class="btn btn-line" for="p-photo">Prendre / choisir une photo</label>
+          <input id="p-photo" type="file" accept="image/*" class="sr">
+          <button class="btn btn-line" type="button" id="p-photo-rm" hidden>Retirer</button>
+        </div>
+      </div>
+      <span class="muted" style="font-size:.85rem">Astuce : photographiez le produit de face, sur un fond clair. L'image est réduite automatiquement.</span>
+    </div>
+    <div class="field"><label for="p-desc">Description (visible sur le site)</label><textarea id="p-desc"></textarea></div>
+    <div class="grid2">
+      <div class="field"><label for="p-pv">Prix de vente (FCFA)</label><input id="p-pv" type="number" min="0" step="25" inputmode="numeric" required></div>
+      <div class="field"><label for="p-pa">Prix d'achat (FCFA)</label><input id="p-pa" type="number" min="0" step="25" inputmode="numeric"></div>
+      <div class="field"><label for="p-seuil">Alerte quand le stock descend à</label><input id="p-seuil" type="number" min="0" inputmode="numeric" value="5"></div>
+      <div class="field"><label for="p-code">Code-barres</label><input id="p-code" inputmode="numeric"></div>
+      <div class="field" id="p-qte-field"><label for="p-qte">Quantité de départ</label><input id="p-qte" type="number" min="0" inputmode="numeric" value="0"></div>
+      <div class="field"><label for="p-per">Prochaine péremption</label><input id="p-per" type="date"></div>
+    </div>
+    <label class="check"><input type="checkbox" id="p-ord"> Médicament sur ordonnance</label>
+    <label class="check"><input type="checkbox" id="p-site"> Afficher dans la boutique du site</label>
+    <p class="muted" style="font-size:.88rem">Les médicaments sur ordonnance ne s'affichent jamais sur le site, même si la case est cochée.</p>
+    <p class="err" id="prod-err" hidden></p>
+    <div class="dlg-foot">
+      <button class="btn btn-danger" type="button" id="prod-del" hidden>Supprimer</button>
+      <button class="btn btn-line" type="button" data-close>Annuler</button>
+      <button class="btn btn-green" type="submit">Enregistrer</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- MOUVEMENT -->
+<dialog id="dlg-mvt">
+  <form class="dlg" id="form-mvt" novalidate>
+    <div><h2 style="font-size:1.4rem">Mouvement de stock</h2><p class="muted" id="mvt-prod" style="margin-top:4px"></p></div>
+    <div class="seg" role="radiogroup" aria-label="Type de mouvement">
+      <label><input type="radio" name="mtype" value="entree" id="m-in" checked> Entrée (+)</label>
+      <label><input type="radio" name="mtype" value="sortie" id="m-out"> Sortie (−)</label>
+      <label><input type="radio" name="mtype" value="ajustement" id="m-adj"> Inventaire</label>
+    </div>
+    <div class="field"><label for="m-qte" id="m-qte-label">Quantité reçue</label><input id="m-qte" type="number" min="0" inputmode="numeric" required></div>
+    <div class="grid2" id="m-lot-row">
+      <div class="field"><label for="m-lot">N° de lot</label><input id="m-lot"></div>
+      <div class="field"><label for="m-per">Date de péremption</label><input id="m-per" type="date"></div>
+    </div>
+    <div class="field"><label for="m-note">Note</label><input id="m-note" placeholder="Ex. livraison grossiste, vente, casse…"></div>
+    <p class="err" id="mvt-err" hidden></p>
+    <div class="dlg-foot">
+      <button class="btn btn-line" type="button" data-close>Annuler</button>
+      <button class="btn btn-green" type="submit">Valider</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- ORDONNANCE -->
+<dialog id="dlg-rx">
+  <div class="dlg rx-view">
+    <div class="drawer-head" style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+      <h2 id="rxv-title" style="font-size:1.3rem">Ordonnance</h2>
+      <button class="btn btn-line" type="button" data-close>Fermer</button>
+    </div>
+    <div id="rxv-body"></div>
+  </div>
+</dialog>
+
+<!-- NOUVEAU MOT DE PASSE (après l'email de réinitialisation) -->
+<dialog id="dlg-pw">
+  <form class="dlg" id="form-pw" novalidate>
+    <h2 style="font-size:1.4rem">Choisir un nouveau mot de passe</h2>
+    <div class="field"><label for="pw1">Nouveau mot de passe (10 caractères minimum)</label><input id="pw1" type="password" autocomplete="new-password" minlength="10"></div>
+    <div class="field"><label for="pw2">Confirmer</label><input id="pw2" type="password" autocomplete="new-password"></div>
+    <p class="err" id="pw-err" hidden></p>
+    <div class="dlg-foot"><button class="btn btn-line" type="button" data-close>Annuler</button><button class="btn btn-green" type="submit">Enregistrer</button></div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script src="js/admin.js?v=202610301443"></script>
+</body>
+</html>

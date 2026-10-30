@@ -1,0 +1,655 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tiycpppxkyggxphdkscx.supabase.co; connect-src 'self' https://tiycpppxkyggxphdkscx.supabase.co; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pharmacie Borom Sam</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Pharmacie Borom Sam – Dr Djily Mbaye, pharmacien titulaire. Envoyez votre ordonnance sur WhatsApp, conseils, parapharmacie, livraison et paiement Wave / Orange Money au Sénégal.">
+<meta name="keywords" content="pharmacie, Sénégal, Dr Djily Mbaye, Borom Sam, ordonnance WhatsApp, pharmacie de garde, parapharmacie, Wave, Orange Money">
+<meta name="theme-color" content="#064E2E">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_SN">
+<meta property="og:title" content="Pharmacie Borom Sam – Dr Djily Mbaye">
+<meta property="og:description" content="Votre pharmacie de quartier : ordonnance par WhatsApp, conseils, parapharmacie et livraison.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23064E2E'/%3E%3Cpath d='M12 5h8v7h7v8h-7v7h-8v-7H5v-8h7z' fill='%2319D46E'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<script src="config.js?v=202610301443"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Pharmacy",
+  "name": "Pharmacie Borom Sam – Dr Djily Mbaye",
+  "telephone": "+221778668424",
+  "address": { "@type": "PostalAddress", "addressCountry": "SN", "streetAddress": "Adresse à compléter" },
+  "openingHours": ["Mo-Sa 08:00-23:00", "Su 08:00-20:00"],
+  "paymentAccepted": "Espèces, Wave, Orange Money, Carte bancaire",
+  "currenciesAccepted": "XOF"
+}
+</script>
+<style>
+/* Layout: deep-green "enseigne" hero with an LED pharmacy cross, then calm light sections on a green-tinted ground. */
+:root {
+  --bg: #F2F6F3;
+  --surface: #FFFFFF;
+  --surface-2: #E7EFEA;
+  --ink: #0F2A1E;
+  --muted: #4A6256;
+  --line: #D3E0D8;
+  --green: #0A7A47;
+  --green-ink: #FFFFFF;
+  --hero-bg: #064E2E;
+  --hero-ink: #ECF7F0;
+  --hero-muted: #A9CDB8;
+  --sand: #E2A33B;
+  --sand-ink: #2A1A00;
+  --led: #19D46E;
+  --led-off: #0D3B25;
+  --ok: #138A4E;
+  --warn: #B4600C;
+  --shadow: 0 1px 2px rgb(6 40 24 / .06), 0 8px 24px rgb(6 40 24 / .07);
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  --radius: 14px;
+  --wrap: 1160px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #07130D; --surface: #0E1F17; --surface-2: #13291E; --ink: #E4F0E8; --muted: #9AB4A6;
+    --line: #1F3A2C; --green: #2FBF77; --green-ink: #03140B; --hero-bg: #04291A; --hero-ink: #E4F5EB;
+    --hero-muted: #8FB9A1; --sand: #F0B85A; --sand-ink: #2A1A00; --led: #3CF28F; --led-off: #0E2C1C;
+    --ok: #3CD483; --warn: #F2A44B; --shadow: 0 1px 2px rgb(0 0 0 / .3), 0 8px 24px rgb(0 0 0 / .3);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #07130D; --surface: #0E1F17; --surface-2: #13291E; --ink: #E4F0E8; --muted: #9AB4A6;
+  --line: #1F3A2C; --green: #2FBF77; --green-ink: #03140B; --hero-bg: #04291A; --hero-ink: #E4F5EB;
+  --hero-muted: #8FB9A1; --sand: #F0B85A; --sand-ink: #2A1A00; --led: #3CF28F; --led-off: #0E2C1C;
+  --ok: #3CD483; --warn: #F2A44B; --shadow: 0 1px 2px rgb(0 0 0 / .3), 0 8px 24px rgb(0 0 0 / .3);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 400 17px/1.6 var(--f-body);
+  -webkit-font-smoothing: antialiased;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60; background: var(--hero-bg); }
+img, canvas { max-width: 100%; }
+a { color: var(--green); }
+h1, h2, h3 { font-family: var(--f-display); line-height: 1.1; text-wrap: balance; margin: 0; }
+h2 { font-size: clamp(1.8rem, 3.6vw, 2.6rem); font-weight: 800; letter-spacing: -.02em; }
+h3 { font-size: 1.2rem; font-weight: 700; }
+p { margin: 0; }
+:focus-visible { outline: 3px solid var(--sand); outline-offset: 2px; border-radius: 6px; }
+.wrap { max-width: var(--wrap); margin-inline: auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.eyebrow { font: 600 .78rem/1 var(--f-body); letter-spacing: .14em; text-transform: uppercase; color: var(--green); }
+.lead { color: var(--muted); font-size: 1.08rem; max-width: 62ch; }
+.section { padding-block: clamp(56px, 8vw, 96px); }
+.section-head { display: grid; gap: 12px; margin-bottom: 36px; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 48px; padding: 0 22px; border-radius: 999px; border: 2px solid transparent;
+  font: 700 1rem/1 var(--f-body); text-decoration: none; cursor: pointer;
+  transition: transform .15s ease, background .15s ease, border-color .15s ease;
+}
+.btn:hover { transform: translateY(-1px); }
+.btn svg { width: 20px; height: 20px; flex: none; }
+.btn-primary { background: var(--sand); color: var(--sand-ink); }
+.btn-green { background: var(--green); color: var(--green-ink); }
+.btn-ghost { border-color: currentColor; color: inherit; background: transparent; }
+.mono { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+
+/* Header */
+.topbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; background: var(--hero-bg); color: var(--hero-ink); border-bottom: 1px solid rgb(255 255 255 / .08); }
+.topbar .wrap { display: flex; align-items: center; gap: 16px; min-height: 68px; }
+.brand { display: flex; align-items: center; gap: 12px; color: inherit; text-decoration: none; min-width: 0; }
+.brand-mark { width: 38px; height: 38px; flex: none; }
+.brand-name { font: 800 1.15rem/1.05 var(--f-display); letter-spacing: -.01em; }
+.brand-sub { display: block; font: 500 .8rem/1.2 var(--f-body); color: var(--hero-muted); }
+.nav { display: flex; gap: 4px; margin-left: auto; }
+.nav a { color: var(--hero-ink); text-decoration: none; font-weight: 600; font-size: .95rem; padding: 8px 12px; border-radius: 8px; }
+.nav a:hover { background: rgb(255 255 255 / .08); }
+.status-pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; font: 600 .85rem/1 var(--f-body); background: rgb(255 255 255 / .08); white-space: nowrap; }
+.status-pill .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--led); box-shadow: 0 0 0 4px rgb(25 212 110 / .2); }
+.status-pill.closed .dot { background: var(--sand); box-shadow: 0 0 0 4px rgb(226 163 59 / .2); }
+.menu-btn { display: none; margin-left: auto; background: none; border: 0; color: inherit; width: 44px; height: 44px; cursor: pointer; }
+.menu-btn svg { width: 26px; height: 26px; }
+@media (max-width: 960px) {
+  .menu-btn { display: inline-grid; place-items: center; }
+  .topbar .status-pill { display: none; }
+  .nav { position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; background: var(--hero-bg); padding: 8px max(16px, env(safe-area-inset-right, 0px)) 16px max(16px, env(safe-area-inset-left, 0px)); border-bottom: 1px solid rgb(255 255 255 / .1); }
+  .nav:not(.open) { display: none; }
+  .nav a { padding: 14px 12px; font-size: 1.05rem; }
+}
+
+/* Hero */
+.hero { background: var(--hero-bg); color: var(--hero-ink); overflow: hidden; position: relative; }
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 40px; align-items: center; padding-block: clamp(40px, 7vw, 88px) clamp(48px, 7vw, 96px); }
+.hero h1 { font-size: clamp(2.4rem, 6vw, 4.4rem); font-weight: 800; letter-spacing: -.03em; }
+.hero h1 span { color: var(--led); }
+.hero .greet { font: 500 1rem/1.3 var(--f-mono); color: var(--sand); margin-bottom: 18px; }
+.hero .lead { color: var(--hero-muted); margin-top: 20px; font-size: 1.15rem; }
+.hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+.hero-ctas .btn-ghost { color: var(--hero-ink); }
+.sign { position: relative; aspect-ratio: 1; width: 100%; max-width: 420px; justify-self: center; }
+.sign canvas { width: 100%; height: 100%; display: block; }
+.sign-caption { position: absolute; bottom: -6px; left: 0; right: 0; text-align: center; font: 500 .78rem/1 var(--f-mono); letter-spacing: .2em; color: var(--hero-muted); text-transform: uppercase; }
+.facts { border-top: 1px solid rgb(255 255 255 / .1); }
+.facts .wrap { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; padding-block: 0; }
+.fact { padding: 20px 20px 22px 0; display: grid; gap: 4px; }
+.fact + .fact { padding-left: 20px; border-left: 1px solid rgb(255 255 255 / .1); }
+.fact b { font: 700 1.05rem/1.2 var(--f-display); }
+.fact span { color: var(--hero-muted); font-size: .92rem; }
+@media (max-width: 860px) {
+  .hero .wrap { grid-template-columns: 1fr; }
+  .sign { max-width: 260px; order: -1; }
+  .facts .wrap { grid-template-columns: 1fr 1fr; }
+  .fact:nth-child(3) { padding-left: 0; border-left: 0; }
+  .fact:nth-child(n+3) { border-top: 1px solid rgb(255 255 255 / .1); }
+}
+
+/* Ordonnance */
+.rx { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 40px; align-items: start; }
+.steps { list-style: none; padding: 0; margin: 28px 0 0; display: grid; gap: 18px; counter-reset: s; }
+.steps li { display: grid; grid-template-columns: 40px 1fr; gap: 14px; align-items: start; counter-increment: s; }
+.steps li::before { content: counter(s); width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--surface-2); color: var(--green); font: 700 1rem/1 var(--f-display); }
+.steps b { display: block; }
+.steps span { color: var(--muted); font-size: .97rem; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
+.form { padding: clamp(20px, 3vw, 32px); display: grid; gap: 18px; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.field { display: grid; gap: 6px; min-width: 0; }
+.field label, .legend { font-weight: 600; font-size: .95rem; }
+.field input, .field textarea, .field select {
+  width: 100%; font: inherit; font-size: 1rem; color: var(--ink); background: var(--bg);
+  border: 1.5px solid var(--line); border-radius: 10px; padding: 12px 14px; min-height: 48px;
+}
+.field textarea { min-height: 96px; resize: vertical; }
+.field input:focus, .field textarea:focus, .field select:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 3px rgb(10 122 71 / .18); }
+.hint { font-size: .85rem; color: var(--muted); }
+.err { font-size: .85rem; color: var(--warn); font-weight: 600; }
+.choice { display: flex; flex-wrap: wrap; gap: 10px; }
+.choice label { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border: 1.5px solid var(--line); border-radius: 10px; cursor: pointer; font-weight: 600; font-size: .95rem; }
+.choice input { accent-color: var(--green); width: 18px; height: 18px; }
+.choice label:has(input:checked) { border-color: var(--green); background: var(--surface-2); }
+.drop { border: 2px dashed var(--line); border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; display: grid; gap: 6px; place-items: center; color: var(--muted); transition: border-color .15s, background .15s; }
+.drop:hover, .drop.over { border-color: var(--green); background: var(--surface-2); }
+.drop svg { width: 34px; height: 34px; color: var(--green); }
+.drop strong { color: var(--ink); }
+.preview { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 10px; background: var(--surface-2); }
+.preview img { width: 56px; height: 56px; object-fit: cover; border-radius: 8px; }
+.preview .name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; font-size: .95rem; }
+.preview button { background: none; border: 0; color: var(--warn); font: 600 .9rem var(--f-body); cursor: pointer; padding: 8px; }
+.notice { display: grid; gap: 4px; padding: 14px 16px; border-radius: 10px; background: color-mix(in srgb, var(--sand) 16%, var(--surface)); border: 1px solid color-mix(in srgb, var(--sand) 45%, var(--line)); font-size: .93rem; }
+.done-box { padding: 16px; border-radius: 10px; background: var(--surface-2); display: grid; gap: 10px; }
+@media (max-width: 860px) { .rx { grid-template-columns: 1fr; } }
+@media (max-width: 520px) { .row2 { grid-template-columns: 1fr; } }
+
+/* Services */
+.gallery { display: grid; grid-template-columns: 1.4fr 1fr; grid-template-rows: 1fr 1fr; gap: 12px; margin-bottom: 28px; }
+.gallery figure { margin: 0; position: relative; border-radius: var(--radius); overflow: hidden; background: var(--surface-2); min-height: 160px; }
+.gallery .g-main { grid-row: 1 / 3; min-height: 340px; }
+.gallery img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.gallery figcaption { position: absolute; left: 12px; bottom: 12px; background: rgb(4 41 26 / .78); color: #ECF7F0; font: 600 .85rem/1.2 var(--f-body); padding: 7px 11px; border-radius: 8px; }
+@media (max-width: 700px) { .gallery { grid-template-columns: 1fr 1fr; grid-template-rows: auto; } .gallery .g-main { grid-column: 1 / -1; grid-row: auto; min-height: 220px; } }
+.credits { font-size: .8rem; }
+.credits summary { cursor: pointer; }
+.credits ul { margin: 8px 0 0; padding-left: 18px; display: grid; gap: 4px; }
+.credits a { color: inherit; }
+.services { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.svc { background: var(--surface); padding: 26px 22px; display: grid; gap: 10px; align-content: start; }
+.svc svg { width: 34px; height: 34px; color: var(--green); }
+.svc p { color: var(--muted); font-size: .96rem; }
+@media (max-width: 960px) { .services { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .services { grid-template-columns: 1fr; } }
+
+/* Catalogue */
+.shop-bar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 22px; }
+.search { position: relative; flex: 1 1 260px; }
+.search input { width: 100%; font: inherit; color: var(--ink); background: var(--surface); border: 1.5px solid var(--line); border-radius: 999px; padding: 12px 16px 12px 44px; min-height: 48px; }
+.search input:focus { outline: none; border-color: var(--green); }
+.search svg { position: absolute; left: 15px; top: 50%; translate: 0 -50%; width: 20px; height: 20px; color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font: 600 .9rem/1 var(--f-body); padding: 10px 14px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; min-height: 40px; }
+.chip[aria-pressed="true"] { background: var(--green); border-color: var(--green); color: var(--green-ink); }
+.products { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+.prod { padding: 12px 12px 16px; display: grid; gap: 8px; grid-template-rows: auto auto auto 1fr auto; }
+.prod > :not(.pic) { margin-inline: 6px; }
+.pic { aspect-ratio: 4 / 3; max-width: 100%; border-radius: 10px; overflow: hidden; background: var(--surface-2); margin-bottom: 6px; }
+.pic img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pic svg { width: 100%; height: 100%; display: block; }
+.prod .cat { font: 600 .72rem/1 var(--f-body); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.prod h3 { font-size: 1.05rem; }
+.prod p { color: var(--muted); font-size: .92rem; }
+.prod .foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 6px; }
+.price { font: 500 .95rem/1 var(--f-mono); }
+.add { min-height: 40px; padding: 0 14px; border-radius: 999px; border: 1.5px solid var(--green); background: transparent; color: var(--green); font: 700 .9rem/1 var(--f-body); cursor: pointer; }
+.add.in { background: var(--green); color: var(--green-ink); }
+.empty { padding: 28px; text-align: center; color: var(--muted); grid-column: 1 / -1; }
+.disclaimer { margin-top: 18px; font-size: .88rem; color: var(--muted); }
+.cart-fab {
+  position: fixed; z-index: 40; right: max(16px, calc(env(safe-area-inset-right, 0px) + 16px)); bottom: calc(env(safe-area-inset-bottom, 0px) + 86px);
+  display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 18px; border-radius: 999px; border: 0;
+  background: var(--sand); color: var(--sand-ink); font: 700 1rem var(--f-body); box-shadow: var(--shadow); cursor: pointer;
+}
+.cart-fab .n { background: var(--sand-ink); color: var(--sand); border-radius: 999px; min-width: 26px; height: 26px; display: grid; place-items: center; font-size: .85rem; padding: 0 6px; }
+.drawer { position: fixed; inset: 0; z-index: 70; display: grid; justify-items: end; background: rgb(0 0 0 / .45); }
+.drawer-panel { width: min(440px, 100%); height: 100%; background: var(--surface); display: grid; grid-template-rows: auto 1fr auto; padding: calc(env(safe-area-inset-top, 0px) + 18px) max(18px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 18px) 18px; gap: 14px; }
+.drawer-head { display: flex; align-items: center; justify-content: space-between; }
+.x { background: none; border: 0; color: var(--ink); width: 44px; height: 44px; cursor: pointer; font-size: 1.6rem; line-height: 1; }
+.lines { overflow-y: auto; display: grid; gap: 10px; align-content: start; }
+.line { display: grid; grid-template-columns: 1fr auto; gap: 6px 12px; padding: 12px; border-radius: 10px; background: var(--surface-2); align-items: center; }
+.line .q { display: inline-flex; align-items: center; gap: 6px; }
+.line .q button { width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); font: 700 1rem var(--f-body); cursor: pointer; }
+.total { display: flex; justify-content: space-between; font-weight: 700; font-size: 1.05rem; }
+
+/* Horaires & garde */
+.hours-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; }
+.hours { padding: 8px 0; }
+.hours table { width: 100%; border-collapse: collapse; }
+.hours td { padding: 13px 24px; border-bottom: 1px solid var(--line); }
+.hours tr:last-child td { border-bottom: 0; }
+.hours td:last-child { text-align: right; font-family: var(--f-mono); font-variant-numeric: tabular-nums; font-size: .95rem; }
+.hours tr.today td { background: var(--surface-2); font-weight: 700; }
+.hours tr.today td:first-child { box-shadow: inset 4px 0 0 var(--green); }
+.garde { padding: 28px; display: grid; gap: 14px; align-content: start; background: var(--hero-bg); color: var(--hero-ink); border-color: transparent; }
+.garde .eyebrow { color: var(--sand); }
+.garde p { color: var(--hero-muted); }
+.urg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 6px; }
+.urg div { border: 1px solid rgb(255 255 255 / .14); border-radius: 10px; padding: 12px; display: grid; gap: 2px; }
+.urg b { font: 500 1.5rem/1 var(--f-mono); color: var(--led); }
+.urg span { font-size: .85rem; color: var(--hero-muted); }
+.status-line { display: flex; align-items: center; gap: 10px; font-weight: 700; margin-bottom: 14px; }
+.status-line .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--ok); }
+.status-line.closed .dot { background: var(--warn); }
+@media (max-width: 860px) { .hours-grid { grid-template-columns: 1fr; } }
+
+/* Équipe */
+.team { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 40px; align-items: center; }
+.portrait { aspect-ratio: 4/5; max-width: 100%; border-radius: var(--radius); background: var(--surface-2); display: grid; place-items: center; position: relative; overflow: hidden; border: 1px solid var(--line); }
+.portrait img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 20%; }
+.portrait .tag { position: absolute; left: 16px; bottom: 16px; right: 16px; background: var(--surface); border-radius: 10px; padding: 12px 14px; box-shadow: var(--shadow); }
+.portrait .tag b { font-family: var(--f-display); display: block; }
+.portrait .tag span { color: var(--muted); font-size: .9rem; }
+.values { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 28px; margin-top: 26px; }
+.values b { display: block; font-family: var(--f-display); font-size: 1.05rem; }
+.values span { color: var(--muted); font-size: .95rem; }
+@media (max-width: 860px) { .team { grid-template-columns: 1fr; } .portrait { max-width: 360px; } }
+@media (max-width: 520px) { .values { grid-template-columns: 1fr; } }
+
+/* Conseils */
+.tips { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.tip { padding: 22px; display: grid; gap: 10px; align-content: start; }
+.tip .tag { justify-self: start; font: 600 .75rem/1 var(--f-body); letter-spacing: .08em; text-transform: uppercase; padding: 6px 10px; border-radius: 999px; background: var(--surface-2); color: var(--green); }
+.tip p { color: var(--muted); font-size: .95rem; }
+@media (max-width: 960px) { .tips { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .tips { grid-template-columns: 1fr; } }
+
+/* FAQ */
+.faq { display: grid; gap: 10px; max-width: 820px; }
+.faq details { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+.faq summary { cursor: pointer; padding: 18px 20px; font-weight: 700; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; font: 500 1.4rem/1 var(--f-mono); color: var(--green); }
+.faq details[open] summary::after { content: "–"; }
+.faq details p { padding: 0 20px 18px; color: var(--muted); }
+
+/* Contact */
+.contact { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.ct { padding: 24px; display: grid; gap: 10px; align-content: start; }
+.ct .val { font: 500 1.05rem/1.4 var(--f-mono); overflow-wrap: anywhere; }
+.ct .acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.small-btn { min-height: 40px; padding: 0 14px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); font: 600 .9rem var(--f-body); cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; }
+.small-btn:hover { border-color: var(--green); }
+@media (max-width: 860px) { .contact { grid-template-columns: 1fr; } }
+
+/* Footer */
+footer { background: var(--hero-bg); color: var(--hero-muted); padding-block: 40px calc(40px + env(safe-area-inset-bottom, 0px)); margin-top: 40px; }
+footer .wrap { display: grid; gap: 20px; }
+footer .top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px; align-items: center; }
+footer .brand { color: var(--hero-ink); }
+footer small { font-size: .85rem; line-height: 1.5; }
+
+.wa-fab {
+  position: fixed; z-index: 40; right: max(16px, calc(env(safe-area-inset-right, 0px) + 16px)); bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+  width: 58px; height: 58px; border-radius: 50%; display: grid; place-items: center; background: #1FA855; color: #fff; box-shadow: var(--shadow);
+}
+.wa-fab svg { width: 30px; height: 30px; }
+.toast { position: fixed; left: 50%; translate: -50% 0; bottom: calc(env(safe-area-inset-bottom, 0px) + 24px); z-index: 80; background: var(--ink); color: var(--bg); padding: 12px 18px; border-radius: 10px; font-weight: 600; box-shadow: var(--shadow); max-width: calc(100% - 32px); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .btn, .btn:hover { transition: none; transform: none; }
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></symbol>
+  <symbol id="i-cross" viewBox="0 0 40 40"><rect width="40" height="40" rx="9" fill="currentColor" opacity=".12"/><path d="M15 6h10v9h9v10h-9v9H15v-9H6V15h9z" fill="currentColor"/></symbol>
+</svg>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#accueil" aria-label="Pharmacie Borom Sam, accueil">
+      <svg class="brand-mark" style="color:var(--led)"><use href="#i-cross"/></svg>
+      <span><span class="brand-name">Pharmacie Borom Sam</span><span class="brand-sub">Dr Djily Mbaye</span></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Navigation principale">
+      <a href="#ordonnance">Ordonnance</a>
+      <a href="#services">Services</a>
+      <a href="#boutique">Parapharmacie</a>
+      <a href="#horaires">Horaires &amp; garde</a>
+      <a href="#conseils">Conseils</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <span class="status-pill" id="pill"><span class="dot"></span><span id="pill-text">…</span></span>
+    <button class="menu-btn" id="menu-btn" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="accueil">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="greet">Dalal ak jàmm · Bienvenue</p>
+        <h1>Votre santé, servie avec <span>soin</span> et conseil.</h1>
+        <p class="lead">La Pharmacie Borom Sam du Dr Djily Mbaye vient d'ouvrir ses portes. Envoyez votre ordonnance par WhatsApp, on prépare tout, vous passez récupérer ou on vous livre.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#ordonnance"><svg><use href="#i-wa"/></svg>Envoyer mon ordonnance</a>
+          <a class="btn btn-ghost" data-tel href="#contact"><svg><use href="#i-phone"/></svg><span data-phone-text>Appeler</span></a>
+        </div>
+      </div>
+      <div class="sign" aria-hidden="true">
+        <canvas id="led" width="420" height="420"></canvas>
+        <div class="sign-caption">Pharmacie</div>
+      </div>
+    </div>
+    <div class="facts">
+      <div class="wrap">
+        <div class="fact"><b id="fact-status">Ouvert</b><span id="fact-hours">Lun–Sam 8h–23h · Dim 8h–20h</span></div>
+        <div class="fact"><b>Wave · Orange Money</b><span>Espèces et carte acceptées</span></div>
+        <div class="fact"><b>Livraison</b><span>Dans le quartier, sur demande</span></div>
+        <div class="fact"><b>Conseil gratuit</b><span>Sans rendez-vous</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ORDONNANCE -->
+  <section class="section" id="ordonnance">
+    <div class="wrap rx">
+      <div>
+        <p class="eyebrow">Ordonnance en ligne</p>
+        <h2 style="margin-top:12px">Votre ordonnance prête avant votre arrivée</h2>
+        <p class="lead" style="margin-top:16px">Plus besoin d'attendre au comptoir. Remplissez ce formulaire, WhatsApp s'ouvre avec votre message déjà écrit.</p>
+        <ol class="steps">
+          <li><div><b>Photographiez l'ordonnance</b><span>Bien à plat, lisible, avec la signature du médecin. Elle arrive directement chez le pharmacien.</span></div></li>
+          <li><div><b>Envoyez, WhatsApp s'ouvre</b><span>Votre message avec le numéro de référence est déjà écrit : il ne reste qu'à appuyer sur Envoyer.</span></div></li>
+          <li><div><b>On vous confirme</b><span>Disponibilité, prix et délai. Vous payez au retrait, par Wave ou Orange Money.</span></div></li>
+        </ol>
+      </div>
+
+      <form class="card form" id="rx-form" novalidate>
+        <div class="row2">
+          <div class="field">
+            <label for="rx-name">Nom complet</label>
+            <input id="rx-name" name="name" autocomplete="name" placeholder="Ex. Awa Diop" required>
+          </div>
+          <div class="field">
+            <label for="rx-phone">Téléphone</label>
+            <input id="rx-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="77 123 45 67" required>
+          </div>
+        </div>
+        <div class="field">
+          <span class="legend">Comment récupérer ?</span>
+          <div class="choice" role="radiogroup">
+            <label><input type="radio" name="mode" value="retrait" id="rx-mode-r" checked> Je passe à la pharmacie</label>
+            <label><input type="radio" name="mode" value="livraison" id="rx-mode-l"> Livraison</label>
+          </div>
+        </div>
+        <div class="field" id="addr-field" hidden>
+          <label for="rx-addr">Adresse de livraison</label>
+          <input id="rx-addr" name="addr" autocomplete="street-address" placeholder="Quartier, rue, point de repère">
+        </div>
+        <div class="field">
+          <span class="legend">Photo de l'ordonnance</span>
+          <label class="drop" id="drop" for="rx-file">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3.5"/></svg>
+            <strong>Prendre ou choisir une photo</strong>
+            <span class="hint">ou glissez-la ici · JPG, PNG, PDF</span>
+          </label>
+          <input id="rx-file" type="file" accept="image/*,application/pdf" class="sr">
+          <div class="preview" id="preview" hidden>
+            <img id="preview-img" alt="Aperçu de l'ordonnance">
+            <span class="name" id="preview-name"></span>
+            <button type="button" id="preview-rm">Retirer</button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="rx-note">Message (facultatif)</label>
+          <textarea id="rx-note" name="note" placeholder="Ex. générique accepté, besoin urgent, allergie…"></textarea>
+        </div>
+        <p class="err" id="rx-err" hidden></p>
+        <button class="btn btn-green" type="submit" id="rx-submit"><svg><use href="#i-wa"/></svg>Envoyer l'ordonnance</button>
+        <div class="done-box" id="rx-done" hidden>
+          <b id="rx-done-title">Votre message est prêt.</b>
+          <span class="hint" id="rx-done-text"></span>
+          <a class="btn btn-green" id="rx-link" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Ouvrir WhatsApp</a>
+        </div>
+        <p class="hint">Votre ordonnance est transmise de façon confidentielle : seul le pharmacien peut la voir. Elle sert uniquement à préparer votre commande.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="section" id="services" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Nos services</p>
+        <h2>Plus qu'un comptoir</h2>
+      </div>
+      <div class="gallery">
+        <figure class="g-main"><img src="img/photos/interieur.jpg" alt="Intérieur d'une officine au Sénégal, rayons de médicaments derrière le comptoir" width="1200" height="800" loading="lazy" decoding="async"><figcaption>Des rayons tenus avec soin</figcaption></figure>
+        <figure><img src="img/photos/acheter.jpg" alt="Comptoir de pharmacie avec des boîtes de médicaments" width="1200" height="800" loading="lazy" decoding="async"><figcaption>Un conseil à chaque délivrance</figcaption></figure>
+        <figure><img src="img/photos/rayons.jpg" alt="Rayon de compléments en fer et vitamines" width="1200" height="800" loading="lazy" decoding="async"><figcaption>Vitamines et compléments</figcaption></figure>
+      </div>
+      <div class="services">
+        <div class="svc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v4H9zM5 7h14v14H5z"/><path d="M12 11v6M9 14h6"/></svg><h3>Médicaments sur ordonnance</h3><p>Délivrance et explication claire de chaque traitement : dose, horaires, durée.</p></div>
+        <div class="svc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg><h3>Tension artérielle</h3><p>Prise de tension rapide au comptoir, avec conseils si les chiffres sont élevés.</p></div>
+        <div class="svc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg><h3>Test de glycémie</h3><p>Contrôle du taux de sucre pour le suivi du diabète, en quelques minutes.</p></div>
+        <div class="svc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg><h3>Conseil sans rendez-vous</h3><p>Fièvre, toux, petits bobos : le pharmacien vous oriente et vous dit quand consulter.</p></div>
+        <div class="svc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21c-4-3-8-6.5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 4.5-4 8-8 11z"/></svg><h3>Mère et bébé</h3><p>Laits infantiles, soins du nourrisson, conseils grossesse et allaitement.</p></div>
+        <div class="svc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10l-1 16H8z"/><path d="M9 9h6"/></svg><h3>Parapharmacie</h3><p>Soins de la peau, hygiène, vitamines, produits solaires et capillaires.</p></div>
+        <div class="svc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="10" rx="2"/><path d="M7 8V6a5 5 0 0 1 10 0v2"/></svg><h3>Matériel médical</h3><p>Tensiomètres, glucomètres, thermomètres, béquilles et petit matériel de soin.</p></div>
+        <div class="svc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg><h3>Livraison à domicile</h3><p>Pour les personnes âgées, malades ou pressées, dans le quartier.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOUTIQUE -->
+  <section class="section" id="boutique" style="background:var(--surface-2)">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Parapharmacie</p>
+        <h2>Préparez votre panier, commandez sur WhatsApp</h2>
+        <p class="lead">Ajoutez les produits à votre liste, nous vous confirmons la disponibilité et le prix exact.</p>
+      </div>
+      <div class="shop-bar">
+        <div class="search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <label for="q" class="sr">Rechercher un produit</label>
+          <input id="q" type="search" placeholder="Rechercher : crème solaire, vitamine C…">
+        </div>
+        <div class="chips" id="chips" role="group" aria-label="Catégories"></div>
+      </div>
+      <div class="products" id="products"></div>
+      <p class="disclaimer">Prix indicatifs en FCFA, à confirmer en pharmacie. Les médicaments soumis à prescription ne sont délivrés que sur présentation d'une ordonnance.</p>
+    </div>
+  </section>
+
+  <!-- HORAIRES -->
+  <section class="section" id="horaires">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Horaires &amp; garde</p>
+        <h2>Quand nous trouver</h2>
+      </div>
+      <div class="hours-grid">
+        <div class="card hours">
+          <div class="status-line" id="status-line" style="padding:16px 24px 0"><span class="dot"></span><span id="status-text"></span></div>
+          <table><tbody id="hours-body"></tbody></table>
+        </div>
+        <div class="card garde">
+          <p class="eyebrow">Pharmacie de garde</p>
+          <h3 style="font-size:1.5rem">La nuit, le dimanche et les jours fériés</h3>
+          <p id="garde-text">Les pharmacies assurent la garde à tour de rôle. Quand nous sommes de garde, nous l'annonçons ici et sur notre WhatsApp. Sinon, la liste des pharmacies de garde est affichée sur notre vitrine.</p>
+          <div class="urg">
+            <div><b>1515</b><span>SAMU</span></div>
+            <div><b>18</b><span>Sapeurs-pompiers</span></div>
+            <div><b>17</b><span>Police</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EQUIPE -->
+  <section class="section" id="equipe" style="padding-top:0">
+    <div class="wrap team">
+      <div class="portrait">
+        <img src="img/dr-djily-mbaye.jpg" alt="Dr Djily Mbaye, pharmacien titulaire de la Pharmacie Borom Sam" width="512" height="640" loading="lazy">
+        <div class="tag"><b>Dr Djily Mbaye</b><span>Docteur en pharmacie, titulaire</span></div>
+      </div>
+      <div>
+        <p class="eyebrow">Votre pharmacien</p>
+        <h2 style="margin-top:12px">Une pharmacie de confiance, tenue par un docteur en pharmacie</h2>
+        <p class="lead" style="margin-top:16px">Le Dr Djily Mbaye a ouvert la Pharmacie Borom Sam pour offrir au quartier des médicaments de qualité, un accueil chaleureux et des conseils pris au sérieux. Chaque ordonnance est vérifiée par un professionnel.</p>
+        <div class="values">
+          <div><b>Médicaments authentiques</b><span>Approvisionnement uniquement auprès des circuits officiels agréés.</span></div>
+          <div><b>Confidentialité</b><span>Vos traitements et vos questions restent entre vous et nous.</span></div>
+          <div><b>Prix justes</b><span>Génériques proposés chaque fois que possible.</span></div>
+          <div><b>Wolof, français</b><span>On vous explique votre traitement dans la langue qui vous convient.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONSEILS -->
+  <section class="section" id="conseils" style="background:var(--surface-2)">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Conseils santé</p>
+        <h2>Les bons réflexes au quotidien</h2>
+      </div>
+      <div class="tips">
+        <article class="card tip"><span class="tag">Paludisme</span><h3>Dormez sous moustiquaire</h3><p>Moustiquaire imprégnée chaque nuit, surtout pendant l'hivernage. Une fièvre doit être testée rapidement : ne prenez pas d'antipaludique sans avis.</p></article>
+        <article class="card tip"><span class="tag">Chaleur</span><h3>Buvez avant d'avoir soif</h3><p>Eau régulièrement, surtout pour les enfants et les aînés. Diarrhée chez l'enfant : demandez-nous des sels de réhydratation orale.</p></article>
+        <article class="card tip"><span class="tag">Tension · Diabète</span><h3>Contrôlez régulièrement</h3><p>Hypertension et diabète ne font souvent pas mal. Un contrôle par mois à la pharmacie permet de suivre l'évolution.</p></article>
+        <article class="card tip"><span class="tag">Médicaments</span><h3>Évitez les médicaments de la rue</h3><p>Les médicaments vendus hors pharmacie peuvent être faux ou mal conservés. Ils mettent votre santé en danger.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Questions fréquentes</p>
+        <h2>Vous nous demandez souvent</h2>
+      </div>
+      <div class="faq">
+        <details><summary>Comment payer ?</summary><p>En espèces, par Wave, par Orange Money ou par carte bancaire. Pour une livraison, le paiement se fait à la réception ou par transfert avant l'envoi.</p></details>
+        <details><summary>Puis-je réserver un médicament sans ordonnance ?</summary><p>Oui pour les produits de parapharmacie et les médicaments en accès libre. Pour un médicament sur prescription, l'ordonnance originale vous sera demandée au retrait.</p></details>
+        <details><summary>Combien coûte la livraison ?</summary><p>Le prix dépend de la distance. Nous vous l'annonçons sur WhatsApp avant de confirmer votre commande.</p></details>
+        <details><summary>Acceptez-vous l'IPM et les assurances ?</summary><p>Contactez-nous avec le nom de votre IPM ou de votre assurance : nous vous confirmons la prise en charge et les documents à apporter.</p></details>
+        <details><summary>Un médicament est en rupture, que faire ?</summary><p>Nous pouvons le commander, souvent pour le lendemain, ou vous proposer un générique équivalent avec votre accord.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section" id="contact" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Contact</p>
+        <h2>Passez nous voir</h2>
+      </div>
+      <div class="contact">
+        <div class="card ct">
+          <h3>Adresse</h3>
+          <p class="val" id="c-addr"></p>
+          <div class="acts"><a class="small-btn" id="c-map" href="#" target="_blank" rel="noopener">Itinéraire Google Maps</a></div>
+        </div>
+        <div class="card ct">
+          <h3>Téléphone</h3>
+          <p class="val" id="c-phone"></p>
+          <div class="acts"><a class="small-btn" data-tel href="#">Appeler</a><button class="small-btn" type="button" data-copy="phone">Copier</button></div>
+        </div>
+        <div class="card ct">
+          <h3>WhatsApp</h3>
+          <p class="val" id="c-wa"></p>
+          <div class="acts"><a class="small-btn" data-wa href="#" target="_blank" rel="noopener">Écrire sur WhatsApp</a><button class="small-btn" type="button" data-copy="wa">Copier</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="top">
+      <a class="brand" href="#accueil"><svg class="brand-mark" style="color:var(--led)"><use href="#i-cross"/></svg><span><span class="brand-name">Pharmacie Borom Sam</span><span class="brand-sub">Dr Djily Mbaye · Docteur en pharmacie</span></span></a>
+      <a class="btn btn-primary" data-wa href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Nous écrire</a>
+    </div>
+    <small>Les informations de ce site sont données à titre indicatif et ne remplacent pas l'avis d'un médecin ou d'un pharmacien. En cas d'urgence, appelez le SAMU au 1515.<br>© <span id="year"></span> Pharmacie Borom Sam – Dr Djily Mbaye. Sénégal. · <a href="admin.html" style="color:inherit">Espace pharmacien</a></small>
+    <details class="credits">
+      <summary>Crédits photos</summary>
+      <ul>
+        <li>Photos d'illustration de Wikimedia Commons, modifiées (recadrage). Elles ne montrent pas la Pharmacie Borom Sam.</li>
+        <li>Intérieur d'officine : Bigfall91, <a href="https://commons.wikimedia.org/wiki/File:Inside_drugstore.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener" target="_blank">CC BY-SA 4.0</a></li>
+        <li>Comptoir : Babacar Dioum, <a href="https://commons.wikimedia.org/wiki/File:Acheter_des_m%C3%A9dicaments.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener" target="_blank">CC BY-SA 4.0</a></li>
+        <li>Rayon de compléments : Charlie.Smatt, <a href="https://commons.wikimedia.org/wiki/File:Drugs_in_a_pharmacy_3.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener" target="_blank">CC BY-SA 4.0</a></li>
+        <li>Tensiomètre : Tiia Monto, <a href="https://commons.wikimedia.org/wiki/File:Beurer_BM26_sphygmomanometer.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/3.0" rel="noopener" target="_blank">CC BY-SA 3.0</a></li>
+        <li>Comprimés de vitamine C : Mx. Granger, <a href="https://commons.wikimedia.org/wiki/File:Vitamin_C_supplements_1.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, CC0</li>
+        <li>Vitamine C effervescente : Shixart1985, <a href="https://commons.wikimedia.org/wiki/File:Effervescent_tablet_of_vitamin_C_in_glass.jpg" rel="noopener" target="_blank">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/2.0" rel="noopener" target="_blank">CC BY 2.0</a></li>
+      </ul>
+    </details>
+  </div>
+</footer>
+
+<button class="cart-fab" id="cart-fab" type="button" hidden>Ma liste <span class="n" id="cart-n">0</span></button>
+<a class="wa-fab" data-wa href="#" target="_blank" rel="noopener" aria-label="Écrire sur WhatsApp"><svg><use href="#i-wa"/></svg></a>
+
+<div class="drawer" id="drawer" hidden>
+  <div class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+    <div class="drawer-head"><h3 id="drawer-title" style="font-size:1.4rem">Ma liste</h3><button class="x" id="drawer-x" aria-label="Fermer">×</button></div>
+    <div class="lines" id="lines"></div>
+    <div style="display:grid;gap:12px">
+      <div class="total"><span>Total indicatif</span><span class="mono" id="total"></span></div>
+      <div class="field"><label for="cart-name">Votre nom</label><input id="cart-name" autocomplete="name" placeholder="Ex. Moussa Ndiaye"></div>
+      <a class="btn btn-green" id="cart-send" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Commander sur WhatsApp</a>
+      <button class="small-btn" type="button" id="cart-clear" style="justify-self:center">Vider la liste</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script src="js/site.js?v=202610301443"></script>
+</body>
+</html>
