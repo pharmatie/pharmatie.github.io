@@ -267,5 +267,15 @@
   function fermer() { box.hidden = true; fab.setAttribute("aria-expanded", "false"); fab.focus(); }
   fab.addEventListener("click", () => (box.hidden ? ouvrir() : fermer()));
   $("#chat-x").addEventListener("click", fermer);
+  // Boutons de la page qui ouvrent directement le chat (data-ouvrir-chat="conseiller" : mode conseiller santé)
+  document.addEventListener("click", e => {
+    const b = e.target.closest("[data-ouvrir-chat]");
+    if (!b) return;
+    ouvrir();
+    if (b.dataset.ouvrirChat === "conseiller" && !modeConseiller) {
+      bulleClient("Conseiller santé (IA)");
+      ACTIONS.conseiller();
+    }
+  });
   document.addEventListener("keydown", e => { if (e.key === "Escape" && !box.hidden) fermer(); });
 })();
