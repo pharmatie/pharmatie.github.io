@@ -86,7 +86,7 @@
     contact: /telephone|numero|appeler|whatsapp|contact|joindre/,
     pharmacien: /pharmacien|humain|une personne|parler|conseiller|docteur|mbaye/,
     produit: /dispo|stock|avez[- ]vous|vous avez|prix|combien|coute|vendez|acheter|cherche/,
-    sante: /dose|posologie|combien de (fois|comprim)|enceinte|grossesse|allait|bebe|nourrisson|enfant|effet|secondaire|melang|interaction|allerg|fievre|toux|mal de|douleur|diarr|vomi|palu|tension|diabet|antibio|traitement|maladie|symptome|soign/
+    sante: /dose|posologie|combien de (fois|comprim)|enceinte|grossesse|allait|effet|secondaire|melang|interaction|allerg|fievre|toux|mal de|douleur|diarr|vomi|palu|tension|diabet|antibio|traitement|maladie|symptome|soign/
   };
   const nbMots = t => t.split(/\s+/).filter(Boolean).length;
 
