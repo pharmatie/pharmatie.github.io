@@ -48,11 +48,13 @@
   /* Recherche dans le catalogue de la base */
   const VIDES = new Set(("avez vous est il elle les des une un du de la le pour avec sans dans sur svp stp merci bonjour "
     + "disponible dispo stock prix combien coute cout vendez vend acheter cherche voudrais veux aimerais").split(" "));
+  const decouper = s => norm(s).split(/[^a-z0-9+]+/).filter(Boolean);
   function chercherProduits(texte) {
-    const mots = norm(texte).split(/[^a-z0-9+]+/).filter(m => m.length >= 3 && !VIDES.has(m));
+    const mots = decouper(texte).filter(m => m.length >= 3 && !VIDES.has(m));
     if (!mots.length) return [];
+    // Un mot de la question doit être le DÉBUT d'un mot du produit (« creme » → « crème »), pas un morceau (« ans » ≠ « sans »).
     return PRODUITS
-      .map(p => ({ p, score: mots.filter(m => norm(p.nom + " " + p.desc + " " + p.cat).includes(m)).length }))
+      .map(p => { const mp = decouper(p.nom + " " + p.desc + " " + p.cat); return { p, score: mots.filter(m => mp.some(w => w.startsWith(m))).length }; })
       .filter(x => x.score > 0).sort((a, b) => b.score - a.score).slice(0, 4).map(x => x.p);
   }
   function repondreProduits(texte, trouves) {
@@ -130,7 +132,8 @@
     if (R.pharmacien.test(t)) { bulle("Le pharmacien vous répond directement sur WhatsApp."); options(lienWA(`Bonjour ${CONFIG.nom}, `)); return; }
 
     const trouves = chercherProduits(texteBrut);
-    if (R.produit.test(t) || trouves.length) { repondreProduits(texteBrut, trouves); return; }
+    // Une question de santé passe avant une simple ressemblance avec un nom de produit.
+    if (R.produit.test(t) || (trouves.length && !R.sante.test(t))) { repondreProduits(texteBrut, trouves); return; }
     if (R.sante.test(t)) {
       bulle("Pour une question sur votre santé ou un médicament (dose, grossesse, enfant, effets…), le pharmacien doit vous répondre lui-même. Je ne donne pas d'avis médical. En cas d'urgence : SAMU 1515.");
       options(lienWA(`Bonjour ${CONFIG.nom}, j'ai une question : ${texteBrut}`, "Poser ma question au pharmacien"));
