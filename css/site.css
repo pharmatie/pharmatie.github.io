@@ -435,3 +435,7 @@ footer small { font-size: .85rem; line-height: 1.5; }
 .page-404 { text-align: center; display: grid; gap: 16px; justify-items: center; padding-block: clamp(60px, 10vw, 120px); }
 .page-404 .code { font: 800 clamp(5rem, 16vw, 9rem)/1 var(--f-display); color: var(--green); letter-spacing: -.04em; }
 .page-404 .actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+
+/* ---------- Conseiller santé (IA) ---------- */
+.msg.ia { white-space: pre-line; border-color: color-mix(in srgb, var(--green) 45%, var(--line)); }
+.msg.info { background: var(--surface-2); font-size: .88rem; }

@@ -1,7 +1,7 @@
 /* ================================================================
-   Chat d'aide : assistant automatique (aucune donnée envoyée à un tiers).
-   Il répond aux questions pratiques, cherche les produits dans la base,
-   et confie les questions de santé au pharmacien (WhatsApp) ou au SAMU.
+   Chat d'aide : assistant automatique pour les questions pratiques (horaires, stock, ordonnance…),
+   plus un « Conseiller santé (IA) » : les questions de santé sont envoyées à la fonction serveur
+   « conseiller-sante » (Claude), jamais directement depuis le navigateur. Urgences : SAMU 1515 en premier.
    Utilise ce que site.js définit : CONFIG, PRODUITS, etatCatalogue, ajouterAuPanier, norm, fcfa…
    ================================================================ */
 (function chatAide() {
@@ -15,7 +15,7 @@
   const lienCarte = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(CONFIG.mapsQuery);
 
   const MENU = [
-    ["horaires", "Horaires"], ["ordonnance", "Envoyer une ordonnance"], ["produit", "Un produit est-il disponible ?"],
+    ["conseiller", "Conseiller santé (IA)"], ["horaires", "Horaires"], ["ordonnance", "Envoyer une ordonnance"], ["produit", "Un produit est-il disponible ?"],
     ["livraison", "Livraison"], ["paiement", "Paiement"], ["adresse", "Adresse"], ["pharmacien", "Parler au pharmacien"], ["urgence", "Urgence"]
   ];
   const lienWA = (texte, label = "Écrire au pharmacien sur WhatsApp") =>
@@ -101,6 +101,61 @@
   };
   const nbMots = t => t.split(/\s+/).filter(Boolean).length;
 
+  /* ---------- Conseiller santé (IA) : fonction serveur « conseiller-sante » (Claude) ---------- */
+  let modeConseiller = false, conseillerDispo = true;
+  const historique = [];   // conversation avec le conseiller, gardée seulement dans cette page
+  const boutonsConseiller = texte =>
+    lienWA(`Bonjour ${CONFIG.nom}, j'ai une question : ${texte}`, "Demander au pharmacien")
+    + `<button type="button" data-quitter="1">Quitter le conseiller</button>`;
+
+  function entrerConseiller(invite) {
+    modeConseiller = true;
+    bulle("<b>Conseiller santé (IA)</b> · Je suis un assistant d'intelligence artificielle. Je donne des informations générales, pas un diagnostic ni une ordonnance. "
+      + "Ne donnez pas votre nom ni votre numéro. <b>Urgence : SAMU 1515.</b>", "bot info");
+    if (invite) { bulle("Posez votre question de santé : symptôme, prévention, bon usage d'un produit…"); input.focus(); }
+  }
+  function quitterConseiller() {
+    modeConseiller = false; historique.length = 0;
+    bulle("Vous avez quitté le conseiller santé. Que puis-je faire d'autre pour vous ?");
+    menu();
+  }
+  async function demanderConseiller(texte) {
+    const cfg = window.SUPABASE_CONFIG || {};
+    if (!conseillerDispo || !cfg.url) {
+      bulle("Pour une question sur votre santé ou un médicament, le pharmacien doit vous répondre lui-même. En cas d'urgence : SAMU 1515.");
+      options(lienWA(`Bonjour ${CONFIG.nom}, j'ai une question : ${texte}`, "Poser ma question au pharmacien"));
+      return;
+    }
+    if (!modeConseiller) entrerConseiller(false);
+    historique.push({ role: "user", content: texte });
+    const ecrit = document.createElement("div");
+    ecrit.className = "msg bot ecrit"; ecrit.setAttribute("aria-label", "Le conseiller réfléchit");
+    ecrit.innerHTML = "<i></i><i></i><i></i>";
+    ajouter(ecrit);
+    let r, j = {};
+    try {
+      r = await fetch(`${cfg.url}/functions/v1/conseiller-sante`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", apikey: cfg.anonKey },
+        body: JSON.stringify({ messages: historique.slice(-12) })
+      });
+      j = await r.json().catch(() => ({}));
+    } catch { r = null; }
+    ecrit.remove();
+    if (!r || !r.ok || typeof j.texte !== "string") {
+      historique.pop();
+      if (r && r.status === 503) { conseillerDispo = false; modeConseiller = false; }
+      bulle(escTexte(j.message || "Le conseiller ne répond pas pour le moment (connexion ?)."));
+      options(lienWA(`Bonjour ${CONFIG.nom}, j'ai une question : ${texte}`, "Poser ma question au pharmacien"));
+      return;
+    }
+    historique.push({ role: "assistant", content: j.texte });
+    const d = document.createElement("div");
+    d.className = "msg bot ia"; d.textContent = j.texte;   // réponse affichée comme du texte, jamais comme du HTML
+    ajouter(d);
+    options(boutonsConseiller(texte));
+  }
+
   function repondre(texteBrut) {
     const t = norm(texteBrut.trim());
     if (!t) return;
@@ -109,6 +164,7 @@
       options(lienWA(`Bonjour ${CONFIG.nom}, j'ai besoin d'aide : ${texteBrut}`, "Prévenir aussi le pharmacien"));
       return;
     }
+    if (modeConseiller) { demanderConseiller(texteBrut); return; }
     if (R.salut.test(t) && nbMots(t) <= 3) { bulle("Bonjour, dalal ak jàmm ! Que puis-je faire pour vous ?"); menu(); return; }
     if (R.merci.test(t) && nbMots(t) <= 4) { bulle("Avec plaisir. Bonne journée et prenez soin de vous !"); return; }
     if (R.garde.test(t)) {
@@ -145,17 +201,14 @@
     const trouves = chercherProduits(texteBrut);
     // Une question de santé passe avant une simple ressemblance avec un nom de produit.
     if (R.produit.test(t) || (trouves.length && !R.sante.test(t))) { repondreProduits(texteBrut, trouves); return; }
-    if (R.sante.test(t)) {
-      bulle("Pour une question sur votre santé ou un médicament (dose, grossesse, enfant, effets…), le pharmacien doit vous répondre lui-même. Je ne donne pas d'avis médical. En cas d'urgence : SAMU 1515.");
-      options(lienWA(`Bonjour ${CONFIG.nom}, j'ai une question : ${texteBrut}`, "Poser ma question au pharmacien"));
-      return;
-    }
+    if (R.sante.test(t)) { demanderConseiller(texteBrut); return; }   // question de santé : le conseiller (IA) répond
     bulle("Je n'ai pas bien compris. Choisissez un sujet, ou posez votre question au pharmacien.");
     menu();
     options(lienWA(`Bonjour ${CONFIG.nom}, ${texteBrut}`, "Demander au pharmacien"));
   }
 
   const ACTIONS = {
+    conseiller: () => (conseillerDispo ? entrerConseiller(true) : demanderConseiller("")),
     horaires: () => bulle(horaires()),
     ordonnance: () => repondre("ordonnance"),
     produit: () => { bulle("Écrivez le nom du produit (par exemple : crème solaire, vitamine C, tensiomètre)."); input.focus(); },
@@ -179,6 +232,7 @@
       return;
     }
     if (e.target.closest("button[data-liste]")) { fermer(); $("#cart-fab").click(); return; }
+    if (e.target.closest("button[data-quitter]")) { quitterConseiller(); return; }
     const go = e.target.closest("button[data-go]");
     if (go) {
       fermer();
@@ -189,10 +243,11 @@
 
   form.addEventListener("submit", e => {
     e.preventDefault();
-    const texte = input.value.trim().slice(0, 300);
+    const texte = input.value.trim().slice(0, 600);
     if (!texte) return;
     input.value = "";
     bulleClient(texte);
+    if (modeConseiller && !R.urgence.test(norm(texte))) { demanderConseiller(texte); return; }
     const ecrit = document.createElement("div");   // « l'assistant écrit… »
     ecrit.className = "msg bot ecrit"; ecrit.setAttribute("aria-label", "L'assistant écrit");
     ecrit.innerHTML = "<i></i><i></i><i></i>";

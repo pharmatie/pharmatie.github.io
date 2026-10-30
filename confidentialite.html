@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="css/site.css?v=202610301607">
+<link rel="stylesheet" href="css/site.css?v=202610301623">
 </head>
 <body>
 
@@ -88,7 +88,10 @@
         <h3>Liste de produits (panier)</h3>
         <p>Votre liste reste dans votre navigateur. Elle n'est envoyée à personne tant que vous ne l'envoyez pas vous-même sur WhatsApp.</p>
         <h3>Chat d'aide</h3>
-        <p>L'assistant fonctionne dans votre navigateur. Vos questions ne sont ni enregistrées ni transmises, sauf si vous choisissez de les envoyer au pharmacien sur WhatsApp.</p>
+        <p>Les réponses pratiques (horaires, stock, ordonnance, paiement…) sont calculées dans votre navigateur : ces questions ne sont ni enregistrées ni transmises.</p>
+        <h3>Conseiller santé (IA)</h3>
+        <p>Les questions posées au conseiller santé sont envoyées à notre serveur, puis au service d'intelligence artificielle Claude de la société Anthropic (États-Unis), qui rédige la réponse. La pharmacie n'enregistre pas ces conversations ; elles sont traitées par Anthropic selon sa politique de confidentialité. Pour limiter les abus, nous comptons seulement le nombre de questions par visiteur, à partir d'une empreinte chiffrée de l'adresse IP, effacée au bout de 2 jours.</p>
+        <p><b>N'indiquez pas votre nom, votre numéro ni d'informations qui permettent de vous identifier.</b> Le conseiller donne des informations générales : ce n'est ni un diagnostic ni une ordonnance.</p>
         <h3>WhatsApp</h3>
         <p>Les messages envoyés sur WhatsApp sont soumis aux conditions et à la politique de confidentialité de WhatsApp.</p>
       </section>
@@ -146,14 +149,14 @@
   <div class="chat-log" id="chat-log" aria-live="polite"></div>
   <form class="chat-form" id="chat-form" autocomplete="off">
     <label for="chat-in" class="sr">Votre question</label>
-    <input id="chat-in" maxlength="300" placeholder="Écrivez votre question…">
+    <input id="chat-in" maxlength="600" placeholder="Écrivez votre question…">
     <button type="submit" class="btn btn-green">Envoyer</button>
   </form>
 </section>
 
 <div class="toast" id="toast" role="status" hidden></div>
 
-<script src="js/commun.js?v=202610301607"></script>
-<script src="js/chat.js?v=202610301607"></script>
+<script src="js/commun.js?v=202610301623"></script>
+<script src="js/chat.js?v=202610301623"></script>
 </body>
 </html>
